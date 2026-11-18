@@ -77,3 +77,16 @@
 - Exact results: validator PASSED; tests OK (local)
 - Not tested: GitHub Actions run; no CI build workflow exists yet
 - Risks / follow-up: Open: how CI detects new upstream builds; whether the player picks a channel.
+
+## 2026-11-18 — Upstream investigation recorded
+- Change ID: C-2026-11-18-07
+- Commit: pending (replace with resulting commit SHA)
+- Status: IMPLEMENTED
+- Motivation / observed problem: Needed to know how upstream Horizon publishes releases/nightlies and what its launcher is.
+- Root cause: n/a (research)
+- Files/modules affected: docs/project-memory/UPSTREAM_SYNC.md, ISSUES.md, CURRENT_STATE.md
+- Implementation: Read upstream README, release page, sparse checkout of launcher/, .github/workflows, docs. Recorded findings and open issues I-004, I-005.
+- Tests/commands: python scripts/validate_project_memory.py
+- Exact results: validator PASSED (local)
+- Not tested: anything runnable; GitHub web tree pages were blocked by robots, so launcher/workflow details came from a sparse git checkout at e3d4dc5
+- Risks / follow-up: Facts are from one snapshot; re-check.

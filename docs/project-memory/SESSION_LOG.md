@@ -70,3 +70,14 @@ Verification:
 - Local: validator PASSED; tests OK.
 Limitations:
 - Design only; no CI build workflow or updater exists.
+
+## S-2026-11-18-07 — Upstream investigation
+Date: 2026-11-18
+Commit: pending
+Goal: Learn how upstream Horizon publishes builds and what its launcher is.
+Changes:
+- Recorded observed upstream facts in UPSTREAM_SYNC.md; added I-004 and I-005.
+Verification:
+- Validator PASSED locally. Findings come from reading upstream at e3d4dc5; nothing was built or run.
+Limitations:
+- Single snapshot; no Android feasibility check yet.

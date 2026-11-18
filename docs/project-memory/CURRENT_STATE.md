@@ -21,6 +21,7 @@ Repository HEAD: resolve dynamically from current main
 
 ## Next actions
 1. Confirm PMCS CI is green on main.
+1b. Resolve I-004 (Android reuse and licensing) and I-005 (meaning of release vs nightly).
 2. Look at upstream Horizon `main` and record the observed revision in UPSTREAM_SYNC.md.
 3. Decide the UI stack and first milestone and record them in DECISIONS.md.
 4. Prove on a real device that engine/launcher/UI payloads can be updated without a new APK (I-003).
