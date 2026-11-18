@@ -16,11 +16,11 @@ Repository HEAD: resolve dynamically from current main
 - No launcher code.
 - PMCS CI result on this repository is pending.
 - No upstream revision observed/recorded yet (see UPSTREAM_SYNC.md).
-- UI stack, update channel/format and packaging are UNDECIDED.
+- UI stack, update mechanism/format and packaging are UNDECIDED. No release channels: the newest build is installed (D-008).
 - Update-without-APK on Android is not proven (see I-003).
 
 ## Next actions
 1. Confirm PMCS CI is green on main.
 2. Look at upstream Horizon `main` and record the observed revision in UPSTREAM_SYNC.md.
-3. Decide the UI stack, update channel and first milestone and record them in DECISIONS.md.
+3. Decide the UI stack and first milestone and record them in DECISIONS.md.
 4. Prove on a real device that engine/launcher/UI payloads can be updated without a new APK (I-003).

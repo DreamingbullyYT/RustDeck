@@ -37,3 +37,14 @@ Verification:
 - See validator and test run recorded in CHANGELOG C-2026-11-18-03.
 Limitations:
 - Design only; no updater exists and nothing was tested on a device.
+
+## S-2026-11-18-04 — No update channels
+Date: 2026-11-18
+Commit: pending
+Goal: Record that there are no release channels; the newest build is installed.
+Changes:
+- Added D-008; updated architecture and state docs.
+Verification:
+- Local: validator PASSED; tests OK.
+Limitations:
+- Design only; no updater exists.

@@ -16,7 +16,7 @@ Status: UNDECIDED. No launcher architecture has been chosen yet.
 ## To be decided (record in DECISIONS.md, then describe here)
 - UI stack
 - Platforms beyond mobile, and distribution format
-- Update channel, check frequency and payload verification (signing/hashes)
+- Update mechanism, check frequency and payload verification (signing/hashes); no channels, newest build wins (D-008)
 - Which parts live in the APK shell vs updatable payloads
 - How the launcher obtains, verifies and updates engine builds
 - How the launcher core stays in sync with upstream

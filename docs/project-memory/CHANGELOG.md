@@ -38,3 +38,16 @@
 - Exact results: see SESSION_LOG.md entry S-2026-11-18-03
 - Not tested: GitHub Actions run; any update mechanism on a device
 - Risks / follow-up: Prove update-without-APK on Android (I-003).
+
+## 2026-11-18 — No update channels
+- Change ID: C-2026-11-18-04
+- Commit: pending (replace with resulting commit SHA)
+- Status: IMPLEMENTED
+- Motivation / observed problem: User does not care about the update channel; the newest build should be installed.
+- Root cause: Channel policy was left open.
+- Files/modules affected: docs/project-memory/* (DECISIONS, ARCHITECTURE, CURRENT_STATE)
+- Implementation: Added D-008; the mechanism stays an implementation detail.
+- Tests/commands: python scripts/validate_project_memory.py; python -m unittest discover -s tests
+- Exact results: validator PASSED; tests OK (local)
+- Not tested: GitHub Actions run
+- Risks / follow-up: Newest-wins with no channels means a bad build reaches everyone; consider this when designing the updater.
