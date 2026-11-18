@@ -46,6 +46,13 @@ jobs:
             echo "AR_aarch64_linux_android=$BIN/llvm-ar"
           } >> "$GITHUB_ENV"
 
+      # Probe-only patch of the upstream checkout (not a RustDeck divergence): run 1 failed because winit's
+      # android-activity needs "game-activity" or "native-activity" enabled.
+      - name: Enable winit native-activity for Android (probe only)
+        run: |
+          cargo add winit@0.30.13 --features android-native-activity --target 'cfg(target_os = "android")' -p horizon-client-render
+          git diff --stat
+
       - name: cargo check horizon-client-render (Android)
         id: render
         continue-on-error: true
@@ -69,11 +76,11 @@ jobs:
             echo
             echo "### First errors (render)"
             echo '```'
-            grep -m 15 -E '^(error|warning: unused)' render.log || true
+            grep -m 20 -E '^error' render.log || true
             echo '```'
             echo "### First errors (client)"
             echo '```'
-            grep -m 15 -E '^error' client.log || true
+            grep -m 20 -E '^error' client.log || true
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
