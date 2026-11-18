@@ -129,3 +129,16 @@
 - Exact results: validator PASSED (local)
 - Not tested: no JDK for Android checked; nothing run on a device
 - Risks / follow-up: JDK 25 availability, size and Android execution limits.
+
+## 2026-11-18 — Android client probe workflow
+- Change ID: C-2026-11-18-11
+- Commit: pending (replace with resulting commit SHA)
+- Status: IMPLEMENTED
+- Motivation / observed problem: Test whether upstream's client compiles for Android before building the launcher UI (I-004).
+- Root cause: n/a (experiment)
+- Files/modules affected: .github/workflows/android-client-probe.yml, docs/project-memory/* (CURRENT_STATE, ISSUES)
+- Implementation: Manual workflow that checks out upstream main and runs cargo check for aarch64-linux-android on horizon-client-render and horizon-client with the NDK on the runner. Closed I-001 (CI green).
+- Tests/commands: python scripts/validate_project_memory.py
+- Exact results: validator PASSED (local); workflow run result recorded in SESSION_LOG S-2026-11-18-11
+- Not tested: a compile check does not show the client starts on a device
+- Risks / follow-up: winit may need an Android activity feature; the client may not be buildable as an Android app without upstream changes.

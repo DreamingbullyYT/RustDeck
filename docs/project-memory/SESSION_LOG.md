@@ -114,3 +114,14 @@ Verification:
 - Validator PASSED locally.
 Limitations:
 - Decision only; nothing tested.
+
+## S-2026-11-18-11 — Android client probe workflow
+Date: 2026-11-18
+Commit: pending
+Goal: Start the Android client test with a CI compile check of upstream Horizon.
+Changes:
+- Added the manual workflow android-client-probe.yml; closed I-001.
+Verification:
+- Validator PASSED locally. Workflow run: pending (result recorded in the next entry).
+Limitations:
+- Compile check only.

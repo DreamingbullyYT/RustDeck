@@ -1,0 +1,88 @@
+name: Android client probe
+# Experiment (docs/project-memory/CURRENT_STATE.md, I-004): does upstream Horizon's client compile for Android?
+# Checks out horizon-rust/horizon main (D-005: no pinning) and runs `cargo check` for aarch64-linux-android.
+# A passing check does not prove the client starts on a device. Manual only.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-client-probe
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Check out upstream Horizon main
+        uses: actions/checkout@v4
+        with:
+          repository: horizon-rust/horizon
+          ref: main
+          fetch-depth: 1
+
+      - name: Record upstream revision
+        run: |
+          echo "## Upstream" >> "$GITHUB_STEP_SUMMARY"
+          echo "horizon-rust/horizon @ $(git rev-parse HEAD) ($(git log -1 --format=%cs))" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Install Rust with the Android target
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android
+
+      - name: Point cargo at the Android NDK
+        run: |
+          NDK="$ANDROID_NDK_LATEST_HOME"
+          BIN="$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin"
+          echo "NDK: $NDK"
+          ls "$BIN" | grep -c aarch64-linux-android || true
+          {
+            echo "CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$BIN/aarch64-linux-android24-clang"
+            echo "CC_aarch64_linux_android=$BIN/aarch64-linux-android24-clang"
+            echo "AR_aarch64_linux_android=$BIN/llvm-ar"
+          } >> "$GITHUB_ENV"
+
+      - name: cargo check horizon-client-render (Android)
+        id: render
+        continue-on-error: true
+        run: |
+          rustc --version
+          cargo check --target aarch64-linux-android -p horizon-client-render 2>&1 | tee render.log
+          exit "${PIPESTATUS[0]}"
+
+      - name: cargo check horizon-client (Android)
+        id: client
+        continue-on-error: true
+        run: cargo check --target aarch64-linux-android -p horizon-client 2>&1 | tee client.log; exit "${PIPESTATUS[0]}"
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## Result"
+            echo "- horizon-client-render: ${{ steps.render.outcome }}"
+            echo "- horizon-client: ${{ steps.client.outcome }}"
+            echo
+            echo "### First errors (render)"
+            echo '```'
+            grep -m 15 -E '^(error|warning: unused)' render.log || true
+            echo '```'
+            echo "### First errors (client)"
+            echo '```'
+            grep -m 15 -E '^error' client.log || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-probe-logs
+          path: |
+            render.log
+            client.log
+          if-no-files-found: ignore
