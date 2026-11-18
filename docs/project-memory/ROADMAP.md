@@ -10,7 +10,8 @@
 - Verified build in CI.
 
 ## Phase 2 — Engine management
-- Fetch, verify, install and update Horizon engine builds.
+- Fetch, verify, install and automatically update Horizon engine builds from this repo.
+- Same for launcher core and UI, without a new APK (D-007).
 
 ## Phase 3 — Upstream tracking
 - Repeatable procedure to follow newer upstream `main` engine and launcher-core revisions with recorded compatibility results.

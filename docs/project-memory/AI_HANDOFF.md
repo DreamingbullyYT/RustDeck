@@ -21,6 +21,7 @@ Upstream: Horizon for PC. Goal: engine version and launcher core as new and as c
 - The launcher stays close to upstream Horizon (PC): follow upstream `main` (no version pinning, D-005), record the observed revision in UPSTREAM_SYNC.md, keep local divergence minimal and documented.
 - Prefer upstream extension points over forks or copied code. Every intentional divergence gets an entry in DECISIONS.md.
 - The UI and flows mirror the official Minecraft launcher, mobile friendly (D-006); no Mojang/Microsoft logos or assets copied.
+- Updates are automatic from this repo; a new APK only when new permissions are needed; engine, launcher core and UI updatable without APK (D-007).
 - Anything not yet decided (UI stack, platforms beyond mobile, packaging) stays UNDECIDED until recorded in DECISIONS.md.
 
 ## Change record requirements

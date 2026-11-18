@@ -29,3 +29,8 @@ RustDeck follows upstream Horizon `main` and does not pin versions. It always ta
 Date: 2026-11-18
 Status: ACCEPTED
 The UI and flows mirror the official Minecraft launcher, adapted to be mobile friendly. Mirror layout and behavior only; do not copy Mojang/Microsoft logos, trademarks or assets.
+
+## D-007 — Automatic updates from our repo; APK only for new permissions
+Date: 2026-11-18
+Status: ACCEPTED
+The launcher always uses the newest engine and launcher builds and updates them automatically from this repository (DreamingbullyyT/RustDeck). A new APK is required only when new Android permissions are needed. Engine, launcher core and the UI must all be updatable without a new APK. Update channel details (GitHub Releases vs CI artifacts, check frequency, verification) are UNDECIDED.

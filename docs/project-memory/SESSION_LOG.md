@@ -26,3 +26,14 @@ Verification:
 - Local: validator PASSED; 4 regression tests OK.
 Limitations:
 - GitHub Actions run still pending. No launcher code yet.
+
+## S-2026-11-18-03 — Auto-update decision
+Date: 2026-11-18
+Commit: pending
+Goal: Record that engine, launcher core and UI update automatically from this repo, and the APK only changes for new permissions.
+Changes:
+- Added D-007 and I-003; updated architecture, state, roadmap and handoff.
+Verification:
+- See validator and test run recorded in CHANGELOG C-2026-11-18-03.
+Limitations:
+- Design only; no updater exists and nothing was tested on a device.

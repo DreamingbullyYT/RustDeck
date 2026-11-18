@@ -25,3 +25,16 @@
 - Exact results: validator PASSED; 4 regression tests OK (local). See SESSION_LOG.md entry S-2026-11-18-02
 - Not tested: GitHub Actions run
 - Risks / follow-up: Without pinning, builds are not reproducible; record the observed upstream revision per build.
+
+## 2026-11-18 — Auto-update decision
+- Change ID: C-2026-11-18-03
+- Commit: pending (replace with resulting commit SHA)
+- Status: IMPLEMENTED
+- Motivation / observed problem: User wants newest engine and launcher always, updated automatically from our repo, with an APK only for new permissions and an updatable UI.
+- Root cause: Update model was not yet recorded.
+- Files/modules affected: docs/project-memory/* (DECISIONS, ARCHITECTURE, CURRENT_STATE, ISSUES, ROADMAP, AI_HANDOFF)
+- Implementation: Added D-007 and I-003; recorded the implied APK-shell plus updatable-payload structure as not yet designed.
+- Tests/commands: python scripts/validate_project_memory.py; python -m unittest discover -s tests
+- Exact results: see SESSION_LOG.md entry S-2026-11-18-03
+- Not tested: GitHub Actions run; any update mechanism on a device
+- Risks / follow-up: Prove update-without-APK on Android (I-003).
