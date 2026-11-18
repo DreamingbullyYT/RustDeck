@@ -16,12 +16,12 @@ Repository HEAD: resolve dynamically from current main
 - No launcher code.
 - PMCS CI result on this repository is pending.
 - No upstream revision observed/recorded yet (see UPSTREAM_SYNC.md).
-- UI stack, update mechanism/format and packaging are UNDECIDED. Release and nightly channels; CI builds automatically only when upstream has a new release or nightly, and skips otherwise; the newest build is installed (D-008).
+- UI is Kotlin with Compose (D-010); update mechanism/format, packaging and the Kotlin-to-Rust bridge are UNDECIDED. Release and nightly channels; CI builds automatically only when upstream has a new release or nightly, and skips otherwise; the newest build is installed (D-008).
 - Update-without-APK on Android is not proven (see I-003).
 
 ## Next actions
 1. Confirm PMCS CI is green on main.
-1b. Resolve I-004 (Android reuse and licensing, and whether the Horizon client runs on Android).
+1b. Resolve I-004 (Horizon client on Android, LGPL) and I-006 (game preparation without Java).
 2. Look at upstream Horizon `main` and record the observed revision in UPSTREAM_SYNC.md.
-3. Decide the UI stack and first milestone and record them in DECISIONS.md.
+3. Decide the Kotlin-to-Rust bridge and first milestone and record them in DECISIONS.md.
 4. Prove on a real device that engine/launcher/UI payloads can be updated without a new APK (I-003).

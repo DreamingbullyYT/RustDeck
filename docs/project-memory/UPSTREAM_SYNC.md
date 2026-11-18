@@ -23,3 +23,9 @@ None recorded. Every intentional divergence must reference a decision in DECISIO
 - The nightly train (`release` workflow) has run only by hand since 2026-11-15 (comment in .github/workflows/release.yml): no automatic Nightly on merges or timer.
 - Upstream launcher is a desktop app (Linux, macOS, Windows x64 and ARM64) in Rust with GPUI Fast; it lists builds, installs them, prepares game files from the player's own Minecraft install or downloads them from Mojang for an account that owns the game, and starts the client. No Android launcher exists upstream; docs/layers.md only mentions iOS/Android as possible desktop-class ports.
 - Upstream release signing crate: crates/horizon-release-sign. Launcher self-update: tar.gz/AppImage/zip (launcher/src/backend.rs).
+
+## Android status upstream (checked 2026-11-18 at e3d4dc5; from ROADMAP.md and source)
+- No official Android build. ROADMAP.md lists Android as a long-term goal and says touch controls, mobile interface, packaging and loading the player's own assets were missing; some contributor pieces exist.
+- Source has Android input code in crates/horizon-client-render (android_runtime.rs, android_gamepad.rs, keypad.rs, touch/), adapted from the Starling `android` branch (MIT). It is input state only; nothing there proves the client runs on Android.
+- Resource preparation needs JDK 25 and the player's own Minecraft files (or the launcher's download from Mojang for an owning account). Upstream tracks Java-free preparation in issue #1750. Horizon ships no Mojang files.
+- The launcher has a CLI (`horizon-launcher`): versions, install, play (`--instance`, `--version`), prepare (`--download`), and more; reference in docs/launcher-commands.md. Games advertise `--launch-api`.

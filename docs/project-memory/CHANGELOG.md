@@ -103,3 +103,16 @@
 - Exact results: validator PASSED (local)
 - Not tested: nothing runnable exists yet
 - Risks / follow-up: I-002 (UI technology), I-004 (Android client, LGPL).
+
+## 2026-11-18 — Android status upstream and Compose decision
+- Change ID: C-2026-11-18-09
+- Commit: pending (replace with resulting commit SHA)
+- Status: IMPLEMENTED
+- Motivation / observed problem: Needed to know whether Horizon's client can run on Android, and the user chose Kotlin with Compose.
+- Root cause: n/a (research and decision)
+- Files/modules affected: docs/project-memory/* (UPSTREAM_SYNC, DECISIONS, ISSUES, ARCHITECTURE, CURRENT_STATE)
+- Implementation: Recorded upstream Android status and CLI; added D-010 and I-006; updated I-004.
+- Tests/commands: python scripts/validate_project_memory.py
+- Exact results: validator PASSED (local)
+- Not tested: nothing run on Android; findings come from reading upstream source and ROADMAP at e3d4dc5
+- Risks / follow-up: Verify the client on a real device; decide the Kotlin-to-Rust bridge.

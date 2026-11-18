@@ -47,3 +47,8 @@ The newest available build is the one that gets installed. The exact mechanism (
 Date: 2026-11-18
 Status: ACCEPTED
 The UI looks like the official Mojang launcher, polished, with an animated background and similar visual touches, and is mobile friendly (D-006). It is bound to the launcher core (Rust logic aligned with the upstream launcher: version listing, install, signature checks, game preparation). Upstream's GPUI desktop UI is not reused. Still open: UI technology (I-002) and LGPL obligations if upstream launcher code is reused (I-004).
+
+## D-010 — Kotlin and Jetpack Compose for the UI
+Date: 2026-11-18
+Status: ACCEPTED
+The Android UI is written in Kotlin with Jetpack Compose (animated background and official-launcher look, D-009). The launcher core stays in Rust, aligned with the upstream launcher. How Kotlin talks to the Rust core (JNI, CLI process, other) is UNDECIDED.

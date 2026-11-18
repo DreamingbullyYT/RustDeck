@@ -92,3 +92,14 @@ Verification:
 - Validator PASSED locally.
 Limitations:
 - Decisions only; no code.
+
+## S-2026-11-18-09 — Android status upstream, Compose decision
+Date: 2026-11-18
+Commit: pending
+Goal: Check whether Horizon's client can run on Android and record the UI technology.
+Changes:
+- Recorded upstream Android status and launcher CLI; added D-010 and I-006; updated I-004.
+Verification:
+- Validator PASSED locally. Nothing built or run; findings are from source and docs at e3d4dc5.
+Limitations:
+- Android feasibility still unproven.
