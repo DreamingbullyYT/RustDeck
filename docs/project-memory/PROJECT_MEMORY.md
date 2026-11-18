@@ -11,12 +11,15 @@ Build a launcher for Horizon from scratch, with the engine version and launcher 
 
 ## Ground rules
 - Start from zero; do not port code from earlier launcher attempts unless a decision in DECISIONS.md says so.
-- Track upstream: pin exact upstream revisions in UPSTREAM_SYNC.md and update them deliberately.
+- Track upstream `main`; no version pinning (D-005). Record the observed revision in UPSTREAM_SYNC.md.
 - Keep divergence from upstream minimal, explicit and recorded.
 - Work directly on main; no PRs or feature branches unless the user changes this rule.
 - No fabricated test results or completion claims.
 - Keep session history append-only.
 - Undecided choices are marked UNDECIDED; do not assume them.
+
+## Product
+The launcher looks and behaves like the official Minecraft launcher, but is mobile friendly (D-006).
 
 ## Architecture
 See ARCHITECTURE.md.

@@ -22,7 +22,7 @@ REQUIRED_TEXT = {
     "CURRENT_STATE.md": ["Implemented", "Not implemented / not verified", "Next actions"],
     "DECISIONS.md": ["D-001", "D-002"],
     "ROADMAP.md": ["Phase 0", "Phase 3", "Exit criteria"],
-    "UPSTREAM_SYNC.md": ["Pinned upstream", "Sync procedure"],
+    "UPSTREAM_SYNC.md": ["Tracked upstream", "Sync procedure"],
     "SESSION_LOG.md": ["append-only", "## S-"],
     "CHANGE_TEMPLATE.md": ["Tests/commands", "Exact results", "Not tested"],
 }

@@ -8,4 +8,4 @@ The workflow and validator were copied and adapted from Rusty-survival-. The fir
 
 ## I-002 — Scope and stack undecided
 Status: OPEN
-UI stack, platform targets and packaging are UNDECIDED.
+UI stack, platforms beyond mobile and packaging are UNDECIDED.

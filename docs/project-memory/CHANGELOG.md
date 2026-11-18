@@ -12,3 +12,16 @@
 - Exact results: validator PASSED; 4 regression tests OK (local). See SESSION_LOG.md entry S-2026-11-18-01
 - Not tested: GitHub Actions run on this repository
 - Risks / follow-up: Verify CI is green (I-001).
+
+## 2026-11-18 — Upstream-main tracking and official-launcher UI decisions
+- Change ID: C-2026-11-18-02
+- Commit: pending (replace with resulting commit SHA)
+- Status: IMPLEMENTED
+- Motivation / observed problem: User decided to follow upstream `main` without pinning and to mirror the official Minecraft launcher, mobile friendly.
+- Root cause: Earlier docs assumed pinned upstream revisions.
+- Files/modules affected: docs/project-memory/* (AI_HANDOFF, PROJECT_MEMORY, CURRENT_STATE, ARCHITECTURE, DECISIONS, ISSUES, ROADMAP, COMPATIBILITY, UPSTREAM_SYNC), scripts/validate_project_memory.py
+- Implementation: Added D-005 and D-006; replaced pinning wording with observed-revision wording; validator marker "Pinned upstream" became "Tracked upstream".
+- Tests/commands: python scripts/validate_project_memory.py; python -m unittest discover -s tests
+- Exact results: validator PASSED; 4 regression tests OK (local). See SESSION_LOG.md entry S-2026-11-18-02
+- Not tested: GitHub Actions run
+- Risks / follow-up: Without pinning, builds are not reproducible; record the observed upstream revision per build.

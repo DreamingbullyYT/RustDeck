@@ -1,6 +1,6 @@
 # Compatibility
 
-| Launcher revision | Upstream Horizon revision | Platform | Result | Notes |
+| Launcher revision | Upstream Horizon `main` revision observed | Platform | Result | Notes |
 |---|---|---|---|---|
 | none yet | none yet | — | — | — |
 

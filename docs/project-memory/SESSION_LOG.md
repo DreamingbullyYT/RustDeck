@@ -14,3 +14,15 @@ Verification:
 - GitHub Actions run: pending.
 Limitations:
 - Nothing beyond PMCS exists yet; launcher scope and stack are UNDECIDED.
+
+## S-2026-11-18-02 — Track upstream main, official-launcher UI
+Date: 2026-11-18
+Commit: pending
+Goal: Record the user's decisions: follow upstream `main` with no pinning; UI mirrors the official Minecraft launcher, mobile friendly.
+Changes:
+- Added D-005 and D-006 and updated handoff, state, roadmap, architecture and upstream-sync docs.
+- Validator marker "Pinned upstream" changed to "Tracked upstream".
+Verification:
+- Local: validator PASSED; 4 regression tests OK.
+Limitations:
+- GitHub Actions run still pending. No launcher code yet.

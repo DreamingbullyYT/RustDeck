@@ -19,3 +19,13 @@ Use the PMCS from Rusty-survival- to survive context compression: docs/project-m
 Date: 2026-11-18
 Status: ACCEPTED
 Commit directly to main; no feature branches or PRs unless the user changes this rule.
+
+## D-005 — Track upstream main, no version pinning
+Date: 2026-11-18
+Status: ACCEPTED
+RustDeck follows upstream Horizon `main` and does not pin versions. It always targets the newest engine and launcher core. The upstream revision actually used by a given build is recorded as an observation (UPSTREAM_SYNC.md, COMPATIBILITY.md), not as a pin.
+
+## D-006 — Official-launcher look and behavior, mobile friendly
+Date: 2026-11-18
+Status: ACCEPTED
+The UI and flows mirror the official Minecraft launcher, adapted to be mobile friendly. Mirror layout and behavior only; do not copy Mojang/Microsoft logos, trademarks or assets.
