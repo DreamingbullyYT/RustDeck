@@ -36,9 +36,10 @@ Status: ACCEPTED
 The launcher always uses the newest engine and launcher builds and updates them automatically from this repository (DreamingbullyyT/RustDeck). A new APK is required only when new Android permissions are needed. Engine, launcher core and the UI must all be updatable without a new APK. Channel policy is in D-008.
 
 ## D-008 — Release and nightly channels; newest build is installed
-Date: 2026-11-18 (corrected the same day; the first version wrongly said "no channels")
+Date: 2026-11-18 (corrected twice the same day; see CHANGELOG C-2026-11-18-05 and -06)
 Status: ACCEPTED
-Two channels: release and nightly.
-- Release: built from new upstream Horizon releases.
-- Nightly: CI automatically builds the APK, libraries and other outputs when upstream has no new release.
-The newest available build is the one that gets installed. The exact mechanism (GitHub Releases vs CI artifacts, schedule, check frequency, verification) and whether the player can choose a channel are UNDECIDED and recorded when the updater is built.
+Two channels: release and nightly. Both follow upstream Horizon.
+- Release: built when upstream publishes a new release.
+- Nightly: built when upstream publishes a new nightly.
+CI builds the APK, libraries and other outputs automatically only when upstream has something new (a release or a nightly). If upstream has nothing new, CI does not build.
+The newest available build is the one that gets installed. The exact mechanism (how CI detects new upstream builds, GitHub Releases vs CI artifacts, schedule, verification) and whether the player can choose a channel are UNDECIDED and recorded when the updater and CI are built.

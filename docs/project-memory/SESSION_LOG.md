@@ -59,3 +59,14 @@ Verification:
 - Local: validator PASSED; tests OK.
 Limitations:
 - Design only; no nightly workflow or updater exists.
+
+## S-2026-11-18-06 — Correct D-008 trigger
+Date: 2026-11-18
+Commit: pending
+Goal: Fix the build trigger: build only when upstream has a new release or nightly.
+Changes:
+- Rewrote D-008; updated architecture and state docs.
+Verification:
+- Local: validator PASSED; tests OK.
+Limitations:
+- Design only; no CI build workflow or updater exists.

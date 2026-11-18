@@ -64,3 +64,16 @@
 - Exact results: validator PASSED; tests OK (local)
 - Not tested: GitHub Actions run; no nightly workflow exists yet
 - Risks / follow-up: Open: whether the player picks a channel; whether nightly is skipped whenever a release exists.
+
+## 2026-11-18 — Correct D-008 again: build only on new upstream builds
+- Change ID: C-2026-11-18-06
+- Commit: pending (replace with resulting commit SHA)
+- Status: IMPLEMENTED
+- Motivation / observed problem: C-2026-11-18-05 had the nightly trigger backwards; the user wants no build when upstream has no new nightly/release.
+- Root cause: Misread the trigger condition.
+- Files/modules affected: docs/project-memory/* (DECISIONS, ARCHITECTURE, CURRENT_STATE)
+- Implementation: Rewrote D-008: builds happen only when upstream publishes a new release or nightly.
+- Tests/commands: python scripts/validate_project_memory.py; python -m unittest discover -s tests
+- Exact results: validator PASSED; tests OK (local)
+- Not tested: GitHub Actions run; no CI build workflow exists yet
+- Risks / follow-up: Open: how CI detects new upstream builds; whether the player picks a channel.

@@ -16,7 +16,7 @@ Repository HEAD: resolve dynamically from current main
 - No launcher code.
 - PMCS CI result on this repository is pending.
 - No upstream revision observed/recorded yet (see UPSTREAM_SYNC.md).
-- UI stack, update mechanism/format and packaging are UNDECIDED. Release and nightly channels; nightly CI builds automatically when upstream has no new release; the newest build is installed (D-008).
+- UI stack, update mechanism/format and packaging are UNDECIDED. Release and nightly channels; CI builds automatically only when upstream has a new release or nightly, and skips otherwise; the newest build is installed (D-008).
 - Update-without-APK on Android is not proven (see I-003).
 
 ## Next actions

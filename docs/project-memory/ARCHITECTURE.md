@@ -14,7 +14,7 @@ Status: UNDECIDED. No launcher architecture has been chosen yet.
 - A thin APK shell (permissions, bootstrap, updater) plus updatable payloads: engine, launcher core and UI.
 
 ## CI
-- Nightly workflow builds APK, libraries and other outputs automatically when upstream has no new release (D-008). Not implemented.
+- CI builds APK, libraries and other outputs automatically only when upstream has a new release or nightly; no new upstream build means no build (D-008). Not implemented.
 
 ## To be decided (record in DECISIONS.md, then describe here)
 - UI stack
