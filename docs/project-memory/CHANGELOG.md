@@ -155,3 +155,16 @@
 - Exact results: both runs failed in dependencies (android-activity, then arboard); see SESSION_LOG S-2026-11-18-12
 - Not tested: anything past the first failing dependency; any device
 - Risks / follow-up: More failures likely behind arboard.
+
+## 2026-11-18 — Upstream patches as files; probe applies them
+- Change ID: C-2026-11-18-13
+- Commit: pending (replace with resulting commit SHA)
+- Status: IMPLEMENTED
+- Motivation / observed problem: Keep upstream changes minimal and separate (D-002, user request); the probe's `cargo add` step was not reusable.
+- Root cause: n/a
+- Files/modules affected: patches/upstream/0001-*.patch, patches/upstream/0002-*.patch, .github/workflows/android-client-probe.yml, docs/project-memory/*
+- Implementation: Two patches (winit Android activity feature; arboard off Android with a stand-in module in a new file). The workflow checks out RustDeck and upstream side by side, applies the patches, then runs cargo check for aarch64-linux-android.
+- Tests/commands: git apply --check of both patches against upstream 8989a51; python scripts/validate_project_memory.py
+- Exact results: both patches apply cleanly (local); validator PASSED. CI result: see SESSION_LOG S-2026-11-18-13
+- Not tested: the patched code has not been compiled yet; nothing on a device
+- Risks / follow-up: More errors likely behind arboard.

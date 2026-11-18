@@ -57,3 +57,8 @@ The Android UI is written in Kotlin with Jetpack Compose (animated background an
 Date: 2026-11-18
 Status: ACCEPTED
 For game preparation on Android, the prototype bundles a JDK 25 build for Android/ARM64 with the app and runs it as a process. When upstream delivers Java-free preparation (upstream issue #1750), RustDeck switches to it. Not verified: that a JDK 25 for Android exists, its size, and that Android allows running it (executables may have to be packaged as native libraries). Writing our own Rust replacement of the vanilla data generator is not planned.
+
+## D-012 — Upstream changes live as small patch files in this repo
+Date: 2026-11-18
+Status: ACCEPTED
+Changes RustDeck needs in upstream Horizon (engine or launcher core) are kept as small patch files in patches/upstream/, applied in CI to a fresh checkout of upstream `main`, and new code goes in separate files where possible, so upstream files change as little as possible (D-002). Fixes that make sense for everyone are offered upstream as PRs; once merged, the patch is deleted. Patches that stop applying after an upstream change must be refreshed, and that is recorded in UPSTREAM_SYNC.md.

@@ -1,7 +1,8 @@
 name: Android client probe
 # Experiment (docs/project-memory/CURRENT_STATE.md, I-004): does upstream Horizon's client compile for Android?
-# Checks out horizon-rust/horizon main (D-005: no pinning) and runs `cargo check` for aarch64-linux-android.
-# A passing check does not prove the client starts on a device. Manual only.
+# Checks out horizon-rust/horizon main (D-005: no pinning), applies RustDeck's small patches from
+# patches/upstream/ (kept as separate files so upstream stays untouched, D-002) and runs `cargo check`
+# for aarch64-linux-android. A passing check does not prove the client starts on a device. Manual only.
 on:
   workflow_dispatch:
 
@@ -17,17 +18,33 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
+      - name: Check out RustDeck (patches)
+        uses: actions/checkout@v4
+        with:
+          path: rustdeck
+
       - name: Check out upstream Horizon main
         uses: actions/checkout@v4
         with:
           repository: horizon-rust/horizon
           ref: main
           fetch-depth: 1
+          path: horizon
 
       - name: Record upstream revision
+        working-directory: horizon
         run: |
           echo "## Upstream" >> "$GITHUB_STEP_SUMMARY"
           echo "horizon-rust/horizon @ $(git rev-parse HEAD) ($(git log -1 --format=%cs))" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Apply RustDeck patches to upstream
+        working-directory: horizon
+        run: |
+          for p in ../rustdeck/patches/upstream/*.patch; do
+            echo "applying $p"
+            git apply --check "$p" && git apply "$p"
+          done
+          git status --short
 
       - name: Install Rust with the Android target
         uses: dtolnay/rust-toolchain@stable
@@ -39,22 +56,15 @@ jobs:
           NDK="$ANDROID_NDK_LATEST_HOME"
           BIN="$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin"
           echo "NDK: $NDK"
-          ls "$BIN" | grep -c aarch64-linux-android || true
           {
             echo "CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$BIN/aarch64-linux-android24-clang"
             echo "CC_aarch64_linux_android=$BIN/aarch64-linux-android24-clang"
             echo "AR_aarch64_linux_android=$BIN/llvm-ar"
           } >> "$GITHUB_ENV"
 
-      # Probe-only patch of the upstream checkout (not a RustDeck divergence): run 1 failed because winit's
-      # android-activity needs "game-activity" or "native-activity" enabled.
-      - name: Enable winit native-activity for Android (probe only)
-        run: |
-          cargo add winit@0.30.13 --features android-native-activity --target 'cfg(target_os = "android")' -p horizon-client-render
-          git diff --stat
-
       - name: cargo check horizon-client-render (Android)
         id: render
+        working-directory: horizon
         continue-on-error: true
         run: |
           rustc --version
@@ -63,11 +73,13 @@ jobs:
 
       - name: cargo check horizon-client (Android)
         id: client
+        working-directory: horizon
         continue-on-error: true
         run: cargo check --target aarch64-linux-android -p horizon-client 2>&1 | tee client.log; exit "${PIPESTATUS[0]}"
 
       - name: Summary
         if: always()
+        working-directory: horizon
         run: |
           {
             echo "## Result"
@@ -90,6 +102,6 @@ jobs:
         with:
           name: android-probe-logs
           path: |
-            render.log
-            client.log
+            horizon/render.log
+            horizon/client.log
           if-no-files-found: ignore

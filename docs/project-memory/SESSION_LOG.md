@@ -139,3 +139,14 @@ Verification:
 - Errors beyond those first dependency failures are not known: cargo stops at the first crate that fails.
 Limitations:
 - Compile check only; nothing was run on a device. Artifact download is blocked from this session (proxy), so results were read from the run logs through gh.
+
+## S-2026-11-18-13 — Patches as files, probe run 3
+Date: 2026-11-18
+Commit: pending
+Goal: Continue the Android compile probe with minimal, separate changes to upstream.
+Changes:
+- Added patches/upstream/0001 (winit activity) and 0002 (arboard fallback, new android_clipboard.rs); workflow now applies them; D-012 recorded.
+Verification:
+- Both patches pass `git apply --check` against upstream 8989a51 locally. Validator PASSED locally. CI run: pending (result recorded in the next entry).
+Limitations:
+- Patched code not yet compiled.

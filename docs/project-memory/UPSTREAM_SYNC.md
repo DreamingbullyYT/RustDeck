@@ -7,7 +7,7 @@
 - Last checked: 2026-11-18
 
 ## Divergence from upstream
-None recorded. Every intentional divergence must reference a decision in DECISIONS.md.
+See the patches table below (D-012). Every intentional divergence must reference a decision in DECISIONS.md.
 
 ## Sync procedure
 1. Fetch the latest upstream `main`.
@@ -29,3 +29,9 @@ None recorded. Every intentional divergence must reference a decision in DECISIO
 - Source has Android input code in crates/horizon-client-render (android_runtime.rs, android_gamepad.rs, keypad.rs, touch/), adapted from the Starling `android` branch (MIT). It is input state only; nothing there proves the client runs on Android.
 - Resource preparation needs JDK 25 and the player's own Minecraft files (or the launcher's download from Mojang for an owning account). Upstream tracks Java-free preparation in issue #1750. Horizon ships no Mojang files.
 - The launcher has a CLI (`horizon-launcher`): versions, install, play (`--instance`, `--version`), prepare (`--download`), and more; reference in docs/launcher-commands.md. Games advertise `--launch-api`.
+
+## Divergence: patches (D-012)
+| Patch | What | Status |
+|---|---|---|
+| patches/upstream/0001-android-winit-activity.patch | enables winit's `android-native-activity` for Android in crates/horizon-client-render/Cargo.toml (3 lines) | applies to 8989a51 (git apply --check, local); not tested in CI yet |
+| patches/upstream/0002-android-clipboard-fallback.patch | arboard only on non-Android; new file android_clipboard.rs stand-in so the in-game clipboard fallback is used on Android (crates/horizon-client-input) | applies to 8989a51 (git apply --check, local); not tested in CI yet |
