@@ -23,7 +23,7 @@ Repository HEAD: resolve dynamically from current main
 
 ## Next actions
 1. Confirm PMCS CI is green on main.
-1a. Run the Android compile probe with patches 0001 and 0002 (D-012) and see what fails next; decide which fixes go upstream as PRs. Then test on the phone (I-004) and try bundled Java (D-011, I-006).
+1a. Write patches 0003 (keybinds.rs and window_handler.rs: no modifier_supplement/scancode on Android) and 0004 (hidapi off Android) and re-run the probe; decide which fixes go upstream as PRs. Then test on the phone (I-004) and try bundled Java (D-011, I-006).
 1b. Resolve I-004 (Horizon client on Android, LGPL) and I-006 (game preparation without Java).
 2. Look at upstream Horizon `main` and record the observed revision in UPSTREAM_SYNC.md.
 3. Decide the Kotlin-to-Rust bridge and first milestone and record them in DECISIONS.md.

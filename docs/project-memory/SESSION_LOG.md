@@ -150,3 +150,17 @@ Verification:
 - Both patches pass `git apply --check` against upstream 8989a51 locally. Validator PASSED locally. CI run: pending (result recorded in the next entry).
 Limitations:
 - Patched code not yet compiled.
+
+## S-2026-11-18-14 — Android probe run 3 results
+Date: 2026-11-18
+Commit: pending
+Goal: Read the result of the probe with patches 0001 and 0002 (run 44377119048, workflow at 23676ae, upstream 8989a51).
+Changes:
+- None to code; results recorded.
+Verification:
+- Both patches applied in CI. The earlier failures (android-activity, arboard) are gone: dependency crates now compile further.
+- horizon-client-render still FAILED, now in upstream's own code, crate horizon-client-input, crates/horizon-client-input/src/keybinds.rs: it uses winit's desktop-only `platform::modifier_supplement` (line 306, `key_without_modifiers`) and `platform::scancode` (line 359, `to_scancode`), which winit builds only for Windows, macOS, X11 and Wayland. The same `modifier_supplement` import is in crates/horizon-client/src/game/runtime/window_handler.rs:440.
+- horizon-client FAILED earlier, in the build script of `hidapi 2.6.7` (controller input): it looks for libudev through pkg-config and cannot cross-compile for aarch64-linux-android.
+- Errors in code after these are not known (cargo stops at the first failing crate).
+Limitations:
+- Compile check only; nothing run on a device.

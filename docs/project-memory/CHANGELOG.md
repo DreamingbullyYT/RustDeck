@@ -168,3 +168,16 @@
 - Exact results: both patches apply cleanly (local); validator PASSED. CI result: see SESSION_LOG S-2026-11-18-13
 - Not tested: the patched code has not been compiled yet; nothing on a device
 - Risks / follow-up: More errors likely behind arboard.
+
+## 2026-11-18 — Android probe run 3 recorded
+- Change ID: C-2026-11-18-14
+- Commit: pending (replace with resulting commit SHA)
+- Status: IMPLEMENTED
+- Motivation / observed problem: Check whether patches 0001 and 0002 move the Android build forward.
+- Root cause: Next blockers are in upstream's own input code (winit desktop-only APIs) and the hidapi build.
+- Files/modules affected: docs/project-memory/* (UPSTREAM_SYNC, ISSUES, CURRENT_STATE, SESSION_LOG)
+- Implementation: documentation only.
+- Tests/commands: workflow run 44377119048
+- Exact results: see SESSION_LOG S-2026-11-18-14
+- Not tested: past the first failing crates; any device
+- Risks / follow-up: Patches 0003 and 0004 touch upstream engine code; keep them minimal (D-012).

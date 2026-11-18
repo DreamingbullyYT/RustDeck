@@ -33,5 +33,5 @@ See the patches table below (D-012). Every intentional divergence must reference
 ## Divergence: patches (D-012)
 | Patch | What | Status |
 |---|---|---|
-| patches/upstream/0001-android-winit-activity.patch | enables winit's `android-native-activity` for Android in crates/horizon-client-render/Cargo.toml (3 lines) | applies to 8989a51 (git apply --check, local); not tested in CI yet |
-| patches/upstream/0002-android-clipboard-fallback.patch | arboard only on non-Android; new file android_clipboard.rs stand-in so the in-game clipboard fallback is used on Android (crates/horizon-client-input) | applies to 8989a51 (git apply --check, local); not tested in CI yet |
+| patches/upstream/0001-android-winit-activity.patch | enables winit's `android-native-activity` for Android in crates/horizon-client-render/Cargo.toml (3 lines) | applies and works in CI (run 44377119048): android-activity now compiles |
+| patches/upstream/0002-android-clipboard-fallback.patch | arboard only on non-Android; new file android_clipboard.rs stand-in so the in-game clipboard fallback is used on Android (crates/horizon-client-input) | applies and works in CI (run 44377119048): arboard no longer fails |
