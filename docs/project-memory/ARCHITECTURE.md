@@ -13,10 +13,13 @@ Status: UNDECIDED. No launcher architecture has been chosen yet.
 ## Implied structure (not yet designed)
 - A thin APK shell (permissions, bootstrap, updater) plus updatable payloads: engine, launcher core and UI.
 
+## CI
+- Nightly workflow builds APK, libraries and other outputs automatically when upstream has no new release (D-008). Not implemented.
+
 ## To be decided (record in DECISIONS.md, then describe here)
 - UI stack
 - Platforms beyond mobile, and distribution format
-- Update mechanism, check frequency and payload verification (signing/hashes); no channels, newest build wins (D-008)
+- Update mechanism, check frequency and payload verification (signing/hashes); release and nightly channels, newest build wins (D-008)
 - Which parts live in the APK shell vs updatable payloads
 - How the launcher obtains, verifies and updates engine builds
 - How the launcher core stays in sync with upstream

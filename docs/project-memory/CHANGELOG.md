@@ -51,3 +51,16 @@
 - Exact results: validator PASSED; tests OK (local)
 - Not tested: GitHub Actions run
 - Risks / follow-up: Newest-wins with no channels means a bad build reaches everyone; consider this when designing the updater.
+
+## 2026-11-18 — Correct D-008: release and nightly channels
+- Change ID: C-2026-11-18-05
+- Commit: pending (replace with resulting commit SHA)
+- Status: IMPLEMENTED
+- Motivation / observed problem: C-2026-11-18-04 misread the user; they meant release vs nightly channels, not "no channels".
+- Root cause: Misunderstanding of "update channel".
+- Files/modules affected: docs/project-memory/* (DECISIONS, ARCHITECTURE, CURRENT_STATE)
+- Implementation: Rewrote D-008 to two channels, release and nightly; nightly CI builds APK, libs and other outputs automatically when upstream has no new release.
+- Tests/commands: python scripts/validate_project_memory.py; python -m unittest discover -s tests
+- Exact results: validator PASSED; tests OK (local)
+- Not tested: GitHub Actions run; no nightly workflow exists yet
+- Risks / follow-up: Open: whether the player picks a channel; whether nightly is skipped whenever a release exists.

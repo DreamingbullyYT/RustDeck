@@ -48,3 +48,14 @@ Verification:
 - Local: validator PASSED; tests OK.
 Limitations:
 - Design only; no updater exists.
+
+## S-2026-11-18-05 — Correct D-008 (release and nightly)
+Date: 2026-11-18
+Commit: pending
+Goal: Fix the previous entry: the user wants release and nightly channels.
+Changes:
+- Rewrote D-008; updated architecture and state docs.
+Verification:
+- Local: validator PASSED; tests OK.
+Limitations:
+- Design only; no nightly workflow or updater exists.
