@@ -12,7 +12,7 @@ Repository HEAD: resolve dynamically from current main
 ## Implemented
 - PMCS continuity docs, validator (scripts/validate_project_memory.py), regression tests and GitHub Actions workflow, adapted from Rusty-survival-.
 
-- .github/workflows/android-client-probe.yml: manual experiment that runs `cargo check` of upstream's horizon-client-render and horizon-client for aarch64-linux-android. First run result: see SESSION_LOG.
+- .github/workflows/android-client-probe.yml: manual experiment that runs `cargo check` of upstream's horizon-client-render and horizon-client for aarch64-linux-android. Results (2026-11-18): it fails to compile; first blockers are the winit activity feature and arboard (see SESSION_LOG S-2026-11-18-12).
 
 ## Not implemented / not verified
 - No launcher code.
@@ -23,7 +23,7 @@ Repository HEAD: resolve dynamically from current main
 
 ## Next actions
 1. Confirm PMCS CI is green on main.
-1a. Build Horizon's Android client from upstream in GitHub Actions and test whether it starts on the phone (I-004), then try bundled Java (D-011, I-006).
+1a. Keep iterating the Android compile probe (gate the arboard clipboard code on Android in the CI checkout, see what fails next); decide whether fixes go upstream as PRs. Then test on the phone (I-004) and try bundled Java (D-011, I-006).
 1b. Resolve I-004 (Horizon client on Android, LGPL) and I-006 (game preparation without Java).
 2. Look at upstream Horizon `main` and record the observed revision in UPSTREAM_SYNC.md.
 3. Decide the Kotlin-to-Rust bridge and first milestone and record them in DECISIONS.md.

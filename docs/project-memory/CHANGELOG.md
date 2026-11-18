@@ -142,3 +142,16 @@
 - Exact results: validator PASSED (local); workflow run result recorded in SESSION_LOG S-2026-11-18-11
 - Not tested: a compile check does not show the client starts on a device
 - Risks / follow-up: winit may need an Android activity feature; the client may not be buildable as an Android app without upstream changes.
+
+## 2026-11-18 — Android probe: winit feature step
+- Change ID: C-2026-11-18-12
+- Commit: 69d958b
+- Status: IMPLEMENTED
+- Motivation / observed problem: Probe run 1 failed because winit's android-activity had no activity feature.
+- Root cause: Upstream's winit dependency has no Android activity feature enabled.
+- Files/modules affected: .github/workflows/android-client-probe.yml, docs/project-memory/* (SESSION_LOG, ISSUES, CURRENT_STATE)
+- Implementation: Probe-only step runs `cargo add winit --features android-native-activity` on the CI checkout.
+- Tests/commands: workflow runs 44375047842 and 44375791519; python scripts/validate_project_memory.py
+- Exact results: both runs failed in dependencies (android-activity, then arboard); see SESSION_LOG S-2026-11-18-12
+- Not tested: anything past the first failing dependency; any device
+- Risks / follow-up: More failures likely behind arboard.

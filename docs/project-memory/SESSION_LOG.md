@@ -125,3 +125,17 @@ Verification:
 - Validator PASSED locally. Workflow run: pending (result recorded in the next entry).
 Limitations:
 - Compile check only.
+
+## S-2026-11-18-12 — Android client probe results
+Date: 2026-11-18
+Commit: pending
+Goal: Run the Android compile probe (S-2026-11-18-11) and read its result.
+Changes:
+- Ran workflow android-client-probe.yml twice against upstream main with Rust 1.100.0 and NDK 30.0.16248370 on ubuntu-latest (target aarch64-linux-android, `cargo check`).
+- Probe workflow got a probe-only step enabling winit's `android-native-activity` feature (patch applied to the CI checkout only).
+Verification:
+- Run 44375047842 (commit a22927c): horizon-client-render and horizon-client both FAILED in `android-activity` (neither "game-activity" nor "native-activity" feature enabled).
+- Run 44375791519 (commit 69d958b, native-activity enabled): both FAILED again, now in `arboard` (the clipboard crate has no Android backend). arboard is used only in crates/horizon-client-input/src/clipboard.rs (declared in that crate's Cargo.toml).
+- Errors beyond those first dependency failures are not known: cargo stops at the first crate that fails.
+Limitations:
+- Compile check only; nothing was run on a device. Artifact download is blocked from this session (proxy), so results were read from the run logs through gh.
