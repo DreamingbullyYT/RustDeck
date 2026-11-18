@@ -103,3 +103,14 @@ Verification:
 - Validator PASSED locally. Nothing built or run; findings are from source and docs at e3d4dc5.
 Limitations:
 - Android feasibility still unproven.
+
+## S-2026-11-18-10 — Java bundled for the prototype
+Date: 2026-11-18
+Commit: pending
+Goal: Record the Java-in-APK direction before starting the Android client test.
+Changes:
+- Added D-011; updated I-006 and next actions.
+Verification:
+- Validator PASSED locally.
+Limitations:
+- Decision only; nothing tested.

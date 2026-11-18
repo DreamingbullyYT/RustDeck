@@ -116,3 +116,16 @@
 - Exact results: validator PASSED (local)
 - Not tested: nothing run on Android; findings come from reading upstream source and ROADMAP at e3d4dc5
 - Risks / follow-up: Verify the client on a real device; decide the Kotlin-to-Rust bridge.
+
+## 2026-11-18 — Java bundled for the prototype
+- Change ID: C-2026-11-18-10
+- Commit: pending (replace with resulting commit SHA)
+- Status: IMPLEMENTED
+- Motivation / observed problem: Game preparation on Android needs Java (I-006).
+- Root cause: n/a (decision)
+- Files/modules affected: docs/project-memory/* (DECISIONS, ISSUES, CURRENT_STATE)
+- Implementation: Added D-011; I-006 now INVESTIGATING; added the first test to next actions.
+- Tests/commands: python scripts/validate_project_memory.py
+- Exact results: validator PASSED (local)
+- Not tested: no JDK for Android checked; nothing run on a device
+- Risks / follow-up: JDK 25 availability, size and Android execution limits.

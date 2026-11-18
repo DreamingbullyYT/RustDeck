@@ -21,6 +21,7 @@ Repository HEAD: resolve dynamically from current main
 
 ## Next actions
 1. Confirm PMCS CI is green on main.
+1a. Build Horizon's Android client from upstream in GitHub Actions and test whether it starts on the phone (I-004), then try bundled Java (D-011, I-006).
 1b. Resolve I-004 (Horizon client on Android, LGPL) and I-006 (game preparation without Java).
 2. Look at upstream Horizon `main` and record the observed revision in UPSTREAM_SYNC.md.
 3. Decide the Kotlin-to-Rust bridge and first milestone and record them in DECISIONS.md.

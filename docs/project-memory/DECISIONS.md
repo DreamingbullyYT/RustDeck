@@ -52,3 +52,8 @@ The UI looks like the official Mojang launcher, polished, with an animated backg
 Date: 2026-11-18
 Status: ACCEPTED
 The Android UI is written in Kotlin with Jetpack Compose (animated background and official-launcher look, D-009). The launcher core stays in Rust, aligned with the upstream launcher. How Kotlin talks to the Rust core (JNI, CLI process, other) is UNDECIDED.
+
+## D-011 — Prototype: bundle Java in the APK; move to Java-free preparation when upstream has it
+Date: 2026-11-18
+Status: ACCEPTED
+For game preparation on Android, the prototype bundles a JDK 25 build for Android/ARM64 with the app and runs it as a process. When upstream delivers Java-free preparation (upstream issue #1750), RustDeck switches to it. Not verified: that a JDK 25 for Android exists, its size, and that Android allows running it (executables may have to be packaged as native libraries). Writing our own Rust replacement of the vanilla data generator is not planned.

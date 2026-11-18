@@ -23,5 +23,5 @@ Status: VERIFIED (resolved by the user 2026-11-18, see D-008)
 Upstream's game ships only Nightly; releases exist only for the launcher (`launcher@X.Y.Z`). D-008's "release" channel needs a precise meaning (probably launcher releases). Needs the user's confirmation.
 
 ## I-006 — Game preparation on Android needs Java or a replacement
-Status: OPEN
+Status: INVESTIGATING (direction chosen in D-011; unproven)
 Upstream preparation needs JDK 25 and the player's own Minecraft files (or Mojang download for an owning account); Java-free preparation is upstream issue #1750. On Android this must be solved or the launcher cannot prepare the game.
