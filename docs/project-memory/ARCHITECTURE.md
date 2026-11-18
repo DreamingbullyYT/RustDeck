@@ -7,6 +7,7 @@ Status: UNDECIDED. No launcher architecture has been chosen yet.
 - Engine version and launcher core track upstream Horizon (PC) as closely as possible.
 - UI and flows mirror the official Minecraft launcher, mobile friendly (D-006).
 - Upstream `main` is followed with no version pinning (D-005).
+- UI: official-launcher style with animated background, bound to the launcher core (D-009).
 - Updates are automatic from this repo; the APK changes only for new permissions; engine, launcher core and UI are updatable without a new APK (D-007).
 - Divergence from upstream is minimal and recorded in DECISIONS.md.
 

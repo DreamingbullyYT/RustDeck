@@ -90,3 +90,16 @@
 - Exact results: validator PASSED (local)
 - Not tested: anything runnable; GitHub web tree pages were blocked by robots, so launcher/workflow details came from a sparse git checkout at e3d4dc5
 - Risks / follow-up: Facts are from one snapshot; re-check.
+
+## 2026-11-18 — Release/nightly meaning and UI direction
+- Change ID: C-2026-11-18-08
+- Commit: pending (replace with resulting commit SHA)
+- Status: IMPLEMENTED
+- Motivation / observed problem: User confirmed release = stable launcher releases, nightly = newest engine; UI like the official Mojang launcher with animated background, bound to launcher core.
+- Root cause: n/a (decisions)
+- Files/modules affected: docs/project-memory/* (DECISIONS, ISSUES, ARCHITECTURE, CURRENT_STATE)
+- Implementation: Refined D-008, added D-009, closed I-005.
+- Tests/commands: python scripts/validate_project_memory.py
+- Exact results: validator PASSED (local)
+- Not tested: nothing runnable exists yet
+- Risks / follow-up: I-002 (UI technology), I-004 (Android client, LGPL).

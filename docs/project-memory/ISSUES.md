@@ -19,5 +19,5 @@ Status: OPEN
 Upstream's launcher is a desktop GPUI app (see UPSTREAM_SYNC.md). "Close to upstream" on Android therefore means reusing/following its Rust logic (version listing, install, signing checks, prepare) while the UI is new. Copying launcher code brings LGPL-3.0-or-later obligations; not yet analyzed. Also unverified: whether Horizon's client itself can run on Android.
 
 ## I-005 — Meaning of "release" vs "nightly" given upstream
-Status: OPEN
+Status: VERIFIED (resolved by the user 2026-11-18, see D-008)
 Upstream's game ships only Nightly; releases exist only for the launcher (`launcher@X.Y.Z`). D-008's "release" channel needs a precise meaning (probably launcher releases). Needs the user's confirmation.

@@ -36,10 +36,14 @@ Status: ACCEPTED
 The launcher always uses the newest engine and launcher builds and updates them automatically from this repository (DreamingbullyyT/RustDeck). A new APK is required only when new Android permissions are needed. Engine, launcher core and the UI must all be updatable without a new APK. Channel policy is in D-008.
 
 ## D-008 — Release and nightly channels; newest build is installed
-Date: 2026-11-18 (corrected twice the same day; see CHANGELOG C-2026-11-18-05 and -06)
+Date: 2026-11-18 (corrected several times the same day; see CHANGELOG C-2026-11-18-05, -06 and -08)
 Status: ACCEPTED
-Two channels: release and nightly. Both follow upstream Horizon.
-- Release: built when upstream publishes a new release.
-- Nightly: built when upstream publishes a new nightly.
-CI builds the APK, libraries and other outputs automatically only when upstream has something new (a release or a nightly). If upstream has nothing new, CI does not build.
+Two channels: release and nightly.
+- Release: RustDeck's own release (launcher), made only when the build is stable enough. Upstream's game has no releases (only Nightly, see UPSTREAM_SYNC.md), so release is about our launcher.
+- Nightly: built automatically so we always have the newest engine (and other components). CI builds the APK, libraries and other outputs only when upstream has a new nightly or release; if upstream has nothing new, CI does not build.
 The newest available build is the one that gets installed. The exact mechanism (how CI detects new upstream builds, GitHub Releases vs CI artifacts, schedule, verification) and whether the player can choose a channel are UNDECIDED and recorded when the updater and CI are built.
+
+## D-009 — Official-launcher-style UI on top of the upstream-aligned launcher core
+Date: 2026-11-18
+Status: ACCEPTED
+The UI looks like the official Mojang launcher, polished, with an animated background and similar visual touches, and is mobile friendly (D-006). It is bound to the launcher core (Rust logic aligned with the upstream launcher: version listing, install, signature checks, game preparation). Upstream's GPUI desktop UI is not reused. Still open: UI technology (I-002) and LGPL obligations if upstream launcher code is reused (I-004).

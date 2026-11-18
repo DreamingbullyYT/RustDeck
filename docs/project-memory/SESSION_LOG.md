@@ -81,3 +81,14 @@ Verification:
 - Validator PASSED locally. Findings come from reading upstream at e3d4dc5; nothing was built or run.
 Limitations:
 - Single snapshot; no Android feasibility check yet.
+
+## S-2026-11-18-08 — Release/nightly meaning and UI direction
+Date: 2026-11-18
+Commit: pending
+Goal: Record the user's answers on release vs nightly and the UI.
+Changes:
+- Refined D-008, added D-009, resolved I-005.
+Verification:
+- Validator PASSED locally.
+Limitations:
+- Decisions only; no code.
