@@ -300,3 +300,21 @@ Verification:
 - Android cargo build is still running; APK packaging/device testing not yet complete.
 Limitations:
 - Successful patch application is not a compilation or runtime result.
+
+
+## S-2026-11-19-12 — First successful Android runtime screen; identify upstream no-resources UI
+Date: 2026-11-19
+Commit: pending
+Goal: Interpret the user's screenshot after installing the APK built with Android guest-stack patch 0005 and align PMCS state with observed runtime behavior.
+Changes:
+- User screenshot shows Horizon's “No prepared game files” screen, with searched path `.local/horizon-client/26.3`.
+- Confirmed exact upstream source at Horizon revision `2d02b5e1a04c0e2ed224d4f218dc57d64b838aac`: `crates/horizon-client/src/no_resources.rs` draws this screen; `crates/horizon-client/src/game/runtime/no_resources.rs` selects and runs it when prepared game files are absent.
+- Upstream source comments explicitly describe it as a game started by hand instead of through a launcher. It is not RustDeck's intended launcher UI.
+- Updated CURRENT_STATE.md to record Android shell + Horizon rendering verified to this point, and clarified ARCHITECTURE.md status: Compose/UI direction accepted, implementation details still open.
+Verification:
+- User-provided device screenshot confirms the Android app progressed past the prior startup failure and rendered Horizon's no-resources UI.
+- Source inspected directly from the exact upstream revision used by the Android build.
+Limitations:
+- No prepared Minecraft files, actual RustDeck launcher UI, game launch or gameplay verified. This is still the test shell described by D-013.
+Next:
+- Implement the Kotlin/Jetpack Compose launcher UI and connect it to Rust launcher core so game files are prepared before starting Horizon, following D-006 through D-011 and keeping upstream divergence minimal.
