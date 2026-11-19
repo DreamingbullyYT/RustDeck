@@ -52,3 +52,7 @@ Upstream has a shared launcher library in `launcher/src/lib.rs` (documented as t
 ## I-012 — Android compilation: holder-dependent runtime lease helper is not cfg-gated
 Status: PATCHED — build verification pending
 Android excludes `horizon-mod-package::holder`, but upstream `runtime_leases::lease_units()` called `crate::holder::lease_paths()` unconditionally when `runtime-process` is enabled. Build run 44513128759 failed with E0433 and a derivative E0277. RustDeck patch 0006 gates `lease_units` to Linux/macOS/Windows, matching holder availability. This helper is not used on Android in current shell. Verify patch application and compile in next run; keep this narrow and upstreamable.
+
+## I-010 — Hand-written patch hunks failed to apply
+Status: INVESTIGATING
+Patch 0006 failed twice at `git apply` (wrong hunk counts, then context that did not match upstream) before it applied. Lesson: create patches with `git diff` from a real checkout of upstream and run `git apply --check` before pushing, never write hunks by hand.

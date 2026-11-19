@@ -419,3 +419,17 @@ The first retry run 44514421085 failed before compilation: `git apply` reported 
 
 ### Follow-up 2 — narrow patch 0006 context to upstream function line (2026-11-19)
 Run 44514542263 failed during patch application: `git apply` could not match the overly broad comment hunk in upstream revision `908e3429b8c8487272a9bb3f3b18666c4262c6df`. Replaced the hunk with a minimal one-line context at the exact `pub fn lease_units(` line (425), commit `c604c11e27d00b3d0480e9176714889ff9fe09c8`. New Android run 44514679341 is in progress; patch application and compilation remain unverified.
+
+## S-2026-11-19-18 — Diagnose Kotlin JVM target failure
+Date: 2026-11-19
+Commit: pending
+Goal: Fix the failing Android APK workflow (run 44514679341, workflow at c604c11).
+Evidence:
+- Patch 0006 now applies and the Rust native library compiles (the earlier failures were patch hunks written by hand; see the two follow-ups above).
+- The run then failed in Gradle `:app:compileDebugKotlin`: "Inconsistent JVM-target compatibility detected for tasks 'compileDebugJavaWithJavac' (1.8) and 'compileDebugKotlin' (17)". Java defaulted to 1.8 while Kotlin used the JDK 17 set up by the workflow.
+Change:
+- app/build.gradle.kts: `compileOptions` source and target compatibility set to Java 17. Nothing else changed.
+Verification:
+- Cause read from the job log. The fix is not yet verified: the next APK run must pass `:app:compileDebugKotlin`.
+Next:
+- Read the next run; address the next real error, if any. Not VERIFIED until an APK is produced and installed.

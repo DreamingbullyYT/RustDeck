@@ -23,3 +23,5 @@
 ## Exit criteria
 - Phase 0 is done when PMCS CI is green, the upstream revision is recorded and the stack decision is recorded.
 - Later phases get their own exit criteria when they are planned.
+
+- 2026-11-19: Compose APK build is past patch application and the Rust build; Gradle Java target fixed, next run pending.

@@ -308,3 +308,16 @@
 - Implementation: cfg-gate holder-dependent `lease_units()` to supported desktop OSes.
 - Tests/commands: Run 44513128759 failed at Rust compilation; patch 0006 is pending validation.
 - Risks/follow-up: ensure patch applies to current upstream main and compile succeeds on Android; continue build.
+
+## 2026-11-19 — Gradle Java 17 target
+- Change ID: C-2026-11-19-11
+- Commit: pending (replace with resulting commit SHA)
+- Status: IMPLEMENTED (not VERIFIED)
+- Motivation / observed problem: Android APK run 44514679341 failed at :app:compileDebugKotlin (JVM target 1.8 vs 17).
+- Root cause: No Java compile options in app/build.gradle.kts; AGP defaults Java to 1.8.
+- Files/modules affected: app/build.gradle.kts
+- Implementation: compileOptions with JavaVersion.VERSION_17.
+- Tests/commands: none locally; the Android APK workflow is the test.
+- Exact results: pending the next run
+- Not tested: everything after :app:compileDebugKotlin
+- Risks / follow-up: more Gradle or Kotlin errors may follow.
