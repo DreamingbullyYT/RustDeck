@@ -186,8 +186,7 @@ private fun HomeScreen(onInstall: () -> Unit) {
                     Spacer(Modifier.weight(1f))
                     Text("ENGINE", color = Muted, fontSize = 10.sp, letterSpacing = 1.5.sp)
                 }
-                Text("Ready for a new
-adventure?", color = White, fontSize = 25.sp, fontWeight = FontWeight.Bold, lineHeight = 29.sp)
+                Text("Ready for a new\\nadventure?", color = White, fontSize = 25.sp, fontWeight = FontWeight.Bold, lineHeight = 29.sp)
                 Text("Your game installation will appear here once the launcher core is connected.", color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.size(8.dp).clip(CircleShape).background(Color(0xFFFFC66D)))
