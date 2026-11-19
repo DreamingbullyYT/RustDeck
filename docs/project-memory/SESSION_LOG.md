@@ -379,3 +379,19 @@ Verification:
 - Workflow fix committed as `398dcb9ebccdec8ef869db80745d61dfe00d8228`; retry/build result is pending.
 Next:
 - Inspect the next Android APK workflow run. If SDK install succeeds, proceed to Gradle/Kotlin compilation; do not call the app build verified until the APK is produced.
+
+
+## S-2026-11-19-16 — Fix sdkmanager license pipe false failure
+Date: 2026-11-19
+Commit: 72c6880dc45cffd15da1a429862f164f0166b1c3
+Goal: Fix second Android APK workflow failure.
+Evidence:
+- Run 44506285451: Rust native library compilation passed, Java setup passed, then SDK platform install step failed before Gradle.
+- Log: `yes: standard output: Broken pipe`; command was `yes | sdkmanager --licenses`. This is caused by sdkmanager closing stdin after it has accepted/processed the license prompts while shell `pipefail` treats the `yes` SIGPIPE as pipeline failure.
+Change:
+- SDK install step now uses `set -eu` (no `pipefail`) only for the license pipe. The final sdkmanager package-install command remains checked normally and fails the step if it fails.
+- No source code or SDK package selection changed.
+Verification:
+- Failure diagnosed from job log. Fix committed; retry/build pending.
+Next:
+- Watch next APK workflow. If SDK packages install, debug Gradle or Kotlin build from logs as needed.
