@@ -40,3 +40,6 @@ Repository HEAD: resolve dynamically from current main
 
 ## Update 2026-11-19 (S-2026-11-19-21)
 - Payload sync workflow and app-side engine updater written (D-015), unverified. Engine Activity still uses the library bundled in the APK.
+
+## Update 2026-11-19 (S-2026-11-19-22)
+- Payload sync first run failed in its compare step (fixed); retry pending.

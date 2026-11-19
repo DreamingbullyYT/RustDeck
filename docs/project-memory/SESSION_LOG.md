@@ -458,3 +458,9 @@ Goal: User asked for automatic patching of the newest upstream engine and launch
 Change: .github/workflows/payload-sync.yml (manifest and engine library in release `payloads`), app PayloadUpdater.kt plus a status card in Installations, D-015.
 Verification: none yet; workflow and app build pending. The downloaded library is not yet loaded by the engine Activity.
 Next: run payload-sync, check manifest; then loader stub for the downloaded library (I-003).
+
+## S-2026-11-19-22 — Payload sync first run failed
+Date: 2026-11-19
+Commit: pending
+Evidence: run 44592255281 failed in the compare step: `cat` of android/shell/* hit a directory, and pipefail aborted the script. Fix: hash files from `find ... -type f`. No manifest exists yet (404 as expected on the first run).
+Verification: next run pending.

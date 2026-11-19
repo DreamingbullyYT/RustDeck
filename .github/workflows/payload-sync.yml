@@ -50,7 +50,7 @@ jobs:
             PUB_DATE=$(jq -r '.engine.upstream_date // ""' old.json)
             PUB_PATCHES=$(jq -r '.engine.patches_hash // ""' old.json)
           fi
-          PATCHES=$(cat rustdeck/patches/upstream/*.patch rustdeck/android/shell/* 2>/dev/null | sha256sum | cut -c1-16)
+          PATCHES=$(find rustdeck/patches/upstream rustdeck/android/shell -type f | sort | xargs cat | sha256sum | cut -c1-16)
           BUILD=false
           if [ "${{ inputs.force }}" = "true" ] || [ -z "$PUB_SHA" ]; then BUILD=true
           elif [ "$SHA" != "$PUB_SHA" ] && [[ "$DATE" > "$PUB_DATE" ]]; then BUILD=true

@@ -64,3 +64,7 @@ The app lists upstream releases without a token (60 requests per hour per IP). U
 ## I-015 — Downloaded engine library is not loaded yet
 Status: OPEN
 The app can fetch and verify the engine, but NativeActivity loads its library only from the APK. A small stub library in the APK must dlopen the downloaded file; whether Android allows that from app storage on the target devices is unverified (I-003).
+
+## I-016 — Payload sync not yet proven
+Status: INVESTIGATING
+First run failed on a shell bug (fixed); no manifest published yet.

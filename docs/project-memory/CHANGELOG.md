@@ -344,3 +344,10 @@
 - Status: IMPLEMENTED (not VERIFIED)
 - Files: .github/workflows/payload-sync.yml, app/.../PayloadUpdater.kt, MainActivity.kt, DECISIONS.md (D-015)
 - Not tested: workflow run, manifest, download and sha256 check on the device.
+
+## 2026-11-19 — Payload sync hash fix
+- Change ID: C-2026-11-19-15
+- Commit: pending
+- Status: IMPLEMENTED (not VERIFIED)
+- Files: .github/workflows/payload-sync.yml
+- Root cause: directory passed to cat under pipefail.
