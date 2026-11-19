@@ -1,6 +1,6 @@
 # Architecture
 
-Status: UNDECIDED. No launcher architecture has been chosen yet.
+Status: PARTIALLY DECIDED. Product/UI direction and UI technology are accepted in DECISIONS.md; implementation architecture, Kotlin-to-Rust bridge, payload packaging and updater internals remain undecided.
 
 ## Constraints already fixed
 - Launcher for Horizon (Minecraft Java rewritten in Rust).
