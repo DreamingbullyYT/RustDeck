@@ -273,3 +273,17 @@ Verification:
 - Patch file committed to RustDeck (`33618a8`). No patch application, build, validator, or device test has run yet.
 Limitations:
 - The Android-only bypass may expose another startup blocker or stack-safety problem; `check_current()` remains unsupported on Android. Build and test before claiming fix.
+
+
+## S-2026-11-19-10 — Correct patch 0005 syntax after CI caught malformed hunk
+Date: 2026-11-19
+Commit: 2c07940 (hunk-count correction)
+Goal: Run the Android build after the startup fix; correct patch formatting caught before compilation.
+Changes:
+- Android APK workflow run 44496319805 failed at `git apply`: patch 0005 was corrupt because its hunk line counts were wrong.
+- Corrected hunk header from 6/14 to 8/17 and committed the correction; a new run should be triggered by the patch change.
+Verification:
+- Failure was precisely identified in the Actions log; hunk counts manually recalculated from context/additions/deletions.
+- Corrected patch is committed; awaiting a fresh patch-apply/build run.
+Limitations:
+- No successful patch application, compilation or device test yet.
