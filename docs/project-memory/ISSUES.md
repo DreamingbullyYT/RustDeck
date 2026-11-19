@@ -47,3 +47,8 @@ The first device log showed `GuestStackUnavailable: stack inspection is unsuppor
 ## I-011 — Reuse of Horizon launcher core on Android and Android engine artifacts
 Status: INVESTIGATING
 Upstream has a shared launcher library in `launcher/src/lib.rs` (documented as the core shared by GUI, CLI and MCP) and public backend functions for releases, install, installed versions and preparation. This is preferable to reimplementing those flows, but Android reuse is not yet proven. The `launcher/Cargo.toml` includes desktop GPUI dependencies, so the library's Android dependency graph must be checked without building the desktop binary/UI. Also, `backend::PLATFORMS` currently lists only Linux x86_64, macOS x86_64/ARM64 and Windows x86_64/ARM64; there is no Android asset. RustDeck needs its own ARM64 engine artifact/update metadata and verification path. The native engine is a NativeActivity library, not an executable that the current desktop `backend::play` process path can launch.
+
+
+## I-012 — Android compilation: holder-dependent runtime lease helper is not cfg-gated
+Status: PATCHED — build verification pending
+Android excludes `horizon-mod-package::holder`, but upstream `runtime_leases::lease_units()` called `crate::holder::lease_paths()` unconditionally when `runtime-process` is enabled. Build run 44513128759 failed with E0433 and a derivative E0277. RustDeck patch 0006 gates `lease_units` to Linux/macOS/Windows, matching holder availability. This helper is not used on Android in current shell. Verify patch application and compile in next run; keep this narrow and upstreamable.
