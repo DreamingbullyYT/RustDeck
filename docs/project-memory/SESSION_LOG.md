@@ -411,3 +411,7 @@ Verification:
 - Patch created; next build must confirm it applies and compiles. Not yet verified.
 Next:
 - Inspect next Android workflow run. If native compile passes, continue SDK/Gradle/Kotlin packaging and address the next actual error.
+
+
+### Follow-up — patch 0006 hunk syntax correction (2026-11-19)
+The first retry run 44514421085 failed before compilation: `git apply` reported patch 0006 was corrupt at line 12. The hunk header declared 9 added lines but the hunk contained only 7. Corrected the header from `@@ -394,6 +394,9 @@` to `@@ -394,6 +394,7 @@` in commit 6497387fcc17315818ee7fb244e0320f9ba9afeb. The next run must verify both patch application and the original Rust compile fix; no compile result is claimed yet.
