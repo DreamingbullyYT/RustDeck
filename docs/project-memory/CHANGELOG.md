@@ -220,3 +220,16 @@
 - Exact results: applies (local); CI result in a later SESSION_LOG entry
 - Not tested: compile; behavior without the holder
 - Risks / follow-up: the holder isolates the mod runtime; whether Android needs an equivalent is open.
+
+## 2026-11-19 — Android cargo check passes
+- Change ID: C-2026-11-19-04
+- Commit: pending (replace with resulting commit SHA)
+- Status: IMPLEMENTED
+- Motivation / observed problem: Whether upstream's client compiles for Android with minimal changes (I-004).
+- Root cause: n/a (result)
+- Files/modules affected: docs/project-memory/* only
+- Implementation: documentation of the probe result.
+- Tests/commands: workflow run 44464658215 (horizon-rust/horizon b45d73d + patches/upstream 0001-0003, rustc 1.100.0, NDK on ubuntu-latest, `cargo check --target aarch64-linux-android -p horizon-client`)
+- Exact results: `cargo check` finished successfully in 5m 00s
+- Not tested: linking, a release build, running on a device, desktop build with the patches
+- Risks / follow-up: a passing type check says nothing about whether the client starts on Android (windowing, graphics, assets, the holder skipped).

@@ -199,3 +199,14 @@ Verification:
 - All three patches pass `git apply --check` and apply together on b45d73d. CI: pending.
 Limitations:
 - Other users of `holder` exist outside the horizon-client check (crates/horizon-game/src/lib.rs:31, crates/horizon-hot-paths-game/src/main.rs:41) and may fail later. Compile check only; no device.
+
+## S-2026-11-19-04 — Android cargo check passes
+Date: 2026-11-19
+Commit: pending
+Goal: Read run 44464658215 (workflow at 7c6096b, upstream b45d73d + patches 0001-0003).
+Changes:
+- None to code; result recorded.
+Verification:
+- horizon-client (lib) `cargo check` for aarch64-linux-android FINISHED successfully (5m 00s). No errors.
+Limitations:
+- Type check only: not linked, not built in release, not run. Other crates that use `holder` (horizon-game, horizon-hot-paths-game) were not checked. Desktop build with patches not run.
