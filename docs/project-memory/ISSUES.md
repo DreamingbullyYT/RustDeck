@@ -42,3 +42,8 @@ Upstream creates a new winit event loop for the resource screen, the loading scr
 ## I-010 — Android guest-stack startup check exits before game initialization
 Status: INVESTIGATING
 The first device log ends immediately after shell startup with `GuestStackUnavailable: stack inspection is unsupported on this platform`. Upstream `horizon_guest_stack::prepare_main()` calls `prepare()` and exits process code 1 on this error. Android is excluded from the Linux/macOS/Windows stack-inspection cfgs. Patch 0005 experimentally skips this fatal main-thread check on Android; it is not yet built or device-verified. Guest stack guarantees and `check_current()` behavior remain unresolved; test whether startup progresses and whether guest execution needs a proper Android stack strategy.
+
+
+## I-011 — Reuse of Horizon launcher core on Android and Android engine artifacts
+Status: INVESTIGATING
+Upstream has a shared launcher library in `launcher/src/lib.rs` (documented as the core shared by GUI, CLI and MCP) and public backend functions for releases, install, installed versions and preparation. This is preferable to reimplementing those flows, but Android reuse is not yet proven. The `launcher/Cargo.toml` includes desktop GPUI dependencies, so the library's Android dependency graph must be checked without building the desktop binary/UI. Also, `backend::PLATFORMS` currently lists only Linux x86_64, macOS x86_64/ARM64 and Windows x86_64/ARM64; there is no Android asset. RustDeck needs its own ARM64 engine artifact/update metadata and verification path. The native engine is a NativeActivity library, not an executable that the current desktop `backend::play` process path can launch.
