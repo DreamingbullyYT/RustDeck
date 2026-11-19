@@ -79,3 +79,9 @@ The Android APK has a Kotlin/Jetpack Compose launcher Activity as its entry poin
 Date: 2026-11-19
 Status: ACCEPTED (design; user request 2026-11-19 20:50), implementation unverified
 The newest upstream build by DATE wins; release or nightly kind does not matter. .github/workflows/payload-sync.yml runs every 6 hours (and on patch changes): if upstream `main` has a commit newer than the engine in our `payloads` release manifest, it applies patches/upstream, builds the Android engine library and publishes librustdeck_engine.so plus manifest.json (sha256, upstream sha and date, patches hash). The app (PayloadUpdater.kt) downloads and verifies the payload only when it is newer than the installed one. Launcher-core and UI payload slots are added when those components exist. Loading a downloaded library from app storage into the NativeActivity is not yet implemented and unproven (I-003).
+
+
+## D-016 — Loader library chooses downloaded or bundled engine
+Date: 2026-11-19
+Status: ACCEPTED (implementation unverified)
+The APK's `librustdeck_android.so` is now a small standalone Rust loader (android/loader). NativeActivity calls its `ANativeActivity_onCreate`, which dlopens <internal data>/payloads/librustdeck_engine.so (the verified download from D-015) and forwards the call; if that file is missing or fails to load it uses `librustdeck_engine_bundled.so` from the APK. Whether Android lets dlopen load a library from app storage on the user's phone is unverified (I-003, I-015).

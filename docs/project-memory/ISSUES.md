@@ -68,3 +68,7 @@ The app can fetch and verify the engine, but NativeActivity loads its library on
 ## I-016 — Payload sync not yet proven
 Status: INVESTIGATING
 First run failed on a shell bug (fixed); no manifest published yet.
+
+## I-017 — Downloaded engine can be older than the bundled one
+Status: OPEN
+The loader prefers the downloaded engine whenever it exists, even if a newer APK bundles a newer engine. The updater should remove stale payloads when the APK's own engine is newer (needs the bundled engine's upstream date embedded in the APK).

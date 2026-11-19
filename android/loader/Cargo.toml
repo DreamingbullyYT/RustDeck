@@ -1,0 +1,21 @@
+# RustDeck engine loader (D-016): the NativeActivity library inside the APK. It loads the engine
+# from app storage when a downloaded payload exists (D-015) and otherwise the engine bundled in
+# the APK. Standalone crate, independent of upstream's workspace.
+[package]
+name = "rustdeck-loader"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "rustdeck_android"
+crate-type = ["cdylib"]
+
+[dependencies]
+libc = "0.2"
+
+[profile.release]
+opt-level = "s"
+lto = true
+strip = true
+
+[workspace]

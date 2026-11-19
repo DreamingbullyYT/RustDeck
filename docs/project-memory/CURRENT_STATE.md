@@ -43,3 +43,6 @@ Repository HEAD: resolve dynamically from current main
 
 ## Update 2026-11-19 (S-2026-11-19-22)
 - Payload sync first run failed in its compare step (fixed); retry pending.
+
+## Update 2026-11-19 (S-2026-11-19-23)
+- Loader stub written (D-016); APK build pending. Downloaded engine would be loaded first, bundled engine is the fallback.

@@ -464,3 +464,11 @@ Date: 2026-11-19
 Commit: pending
 Evidence: run 44592255281 failed in the compare step: `cat` of android/shell/* hit a directory, and pipefail aborted the script. Fix: hash files from `find ... -type f`. No manifest exists yet (404 as expected on the first run).
 Verification: next run pending.
+
+## S-2026-11-19-23 — Engine loader stub
+Date: 2026-11-19
+Commit: pending
+Goal: Let the engine Activity run the downloaded engine (user said continue).
+Change: android/loader (Rust cdylib), android-apk.yml builds it and packages the CI-built engine as librustdeck_engine_bundled.so; D-016. Payload sync run 44592390644 succeeded earlier and published librustdeck_engine.so and manifest.json.
+Verification: none yet; APK build pending, no device test.
+Next: user tests the Play path later; device log lines 'loader: using ...' show which engine loaded.

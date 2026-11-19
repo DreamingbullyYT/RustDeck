@@ -121,7 +121,10 @@ jobs:
           ls -l "$SO"
           "$ANDROID_NDK_BIN/llvm-strip" --strip-unneeded "$SO"
           mkdir -p rustdeck/app/src/main/jniLibs/arm64-v8a
-          cp "$SO" rustdeck/app/src/main/jniLibs/arm64-v8a/librustdeck_android.so
+          cp "$SO" rustdeck/app/src/main/jniLibs/arm64-v8a/librustdeck_engine_bundled.so
+          cargo build --release --target aarch64-linux-android --manifest-path rustdeck/android/loader/Cargo.toml
+          cp rustdeck/android/loader/target/aarch64-linux-android/release/librustdeck_android.so rustdeck/app/src/main/jniLibs/arm64-v8a/librustdeck_android.so
+          ls -l rustdeck/app/src/main/jniLibs/arm64-v8a
           cd rustdeck
           gradle --no-daemon assembleDebug
           cp app/build/outputs/apk/debug/app-debug.apk ../RustDeck-nightly.apk

@@ -351,3 +351,10 @@
 - Status: IMPLEMENTED (not VERIFIED)
 - Files: .github/workflows/payload-sync.yml
 - Root cause: directory passed to cat under pipefail.
+
+## 2026-11-19 — Engine loader
+- Change ID: C-2026-11-19-16
+- Commit: pending
+- Status: IMPLEMENTED (not VERIFIED)
+- Files: android/loader/*, .github/workflows/android-apk.yml, DECISIONS.md (D-016)
+- Risk: a bundled engine rebuilt later than the downloaded payload is not preferred automatically; the downloaded one wins whenever present.
