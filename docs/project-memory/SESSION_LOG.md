@@ -441,3 +441,12 @@ Goal: Confirm the Java 17 fix.
 Evidence: Android APK run 44520511269 completed with success; the nightly prerelease holds RustDeck-nightly.apk (about 67.6 MB). Issue ID of the patch-hunk lesson renamed I-010 to I-013 (duplicate ID).
 Verification: APK produced by CI; not yet installed on a device, so not VERIFIED.
 Next: user installs the nightly APK; check the Compose UI renders.
+
+## S-2026-11-19-20 — Installations screen lists upstream builds
+Date: 2026-11-19
+Commit: pending
+Goal: First real data in the UI after the user confirmed the Compose UI renders on the phone.
+Evidence: User saw the UI working on the device. Upstream at 4e25c24d: backend::PLATFORMS (launcher/src/backend/release_assets.rs) has only Linux x86_64, macOS and Windows assets, no Android asset, so the engine for Android must come from RustDeck CI (see I-011).
+Change: app/.../UpstreamReleases.kt (GitHub releases list, launcher@ tags skipped) and InstallationsScreen shows tags, dates and Android availability.
+Verification: not built yet; CI run pending.
+Next: engine artifact and update metadata from RustDeck CI; Kotlin-Rust bridge.

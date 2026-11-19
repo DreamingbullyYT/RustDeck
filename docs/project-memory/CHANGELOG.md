@@ -329,3 +329,11 @@
 - Files: docs/project-memory/ISSUES.md (duplicate ID I-010 renamed I-013)
 - Exact results: run 44520511269 success; RustDeck-nightly.apk published.
 - Not tested: install and rendering on a phone.
+
+## 2026-11-19 — Installations lists upstream builds
+- Change ID: C-2026-11-19-13
+- Commit: pending
+- Status: IMPLEMENTED (not VERIFIED)
+- Files: app/src/main/java/com/rustdeck/app/{UpstreamReleases.kt,MainActivity.kt}
+- Tests: none locally; the Android APK workflow builds it.
+- Not tested: network call on the device, GitHub unauthenticated rate limit (60 per hour).

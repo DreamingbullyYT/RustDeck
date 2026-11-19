@@ -1,6 +1,8 @@
 package com.rustdeck.app
 
 import android.os.Bundle
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -34,6 +36,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -225,14 +229,34 @@ private fun InfoCard(title: String, value: String, subtitle: String, modifier: M
 
 @Composable
 private fun InstallationsScreen() {
+    var state by remember { mutableStateOf<Result<List<UpstreamBuild>>?>(null) }
+    var reload by remember { mutableIntStateOf(0) }
+    LaunchedEffect(reload) {
+        state = null
+        state = withContext(Dispatchers.IO) { UpstreamReleases.fetch() }
+    }
     Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
         Text("Installations", color = White, fontSize = 27.sp, fontWeight = FontWeight.Bold)
-        Text("Manage your Horizon game versions.", color = Muted, fontSize = 14.sp)
-        Surface(color = Panel, shape = RoundedCornerShape(20.dp), modifier = Modifier.fillMaxWidth()) {
-            Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text("No installations yet", color = White, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
-                Text("The Rust launcher core and Android game-preparation pipeline are the next implementation step. No game files have been downloaded.", color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
-                Text("STATUS  ·  NOT CONFIGURED", color = Color(0xFFFFD18B), fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+        Text("Horizon builds published upstream.", color = Muted, fontSize = 14.sp)
+        val s = state
+        when {
+            s == null -> Text("Loading…", color = Muted, fontSize = 14.sp)
+            s.isFailure -> {
+                Text("Could not load: ${s.exceptionOrNull()?.message}", color = Color(0xFFFFD18B), fontSize = 13.sp)
+                Button(onClick = { reload++ }, colors = ButtonDefaults.buttonColors(containerColor = Mint, contentColor = Ink)) { Text("Retry") }
+            }
+            else -> s.getOrThrow().forEach { b ->
+                Surface(color = Panel, shape = RoundedCornerShape(20.dp), modifier = Modifier.fillMaxWidth()) {
+                    Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Text(b.tag, color = White, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+                        Text(b.date, color = Muted, fontSize = 13.sp)
+                        Text(
+                            if (b.hasAndroidAsset) "ANDROID BUILD AVAILABLE" else "NO ANDROID BUILD UPSTREAM · NOT INSTALLABLE YET",
+                            color = if (b.hasAndroidAsset) Mint else Color(0xFFFFD18B),
+                            fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp,
+                        )
+                    }
+                }
             }
         }
     }

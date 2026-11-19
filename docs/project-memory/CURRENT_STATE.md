@@ -34,3 +34,6 @@ Repository HEAD: resolve dynamically from current main
 
 ## Update 2026-11-19 (S-2026-11-19-19)
 - Android APK run 44520511269 succeeded with the Compose app and the engine library; the APK is in the nightly prerelease. Device install not yet tested.
+
+## Update 2026-11-19 (S-2026-11-19-20)
+- User confirmed the Compose UI renders on the phone. Installations now fetches upstream releases (unbuilt). Upstream has no Android asset.

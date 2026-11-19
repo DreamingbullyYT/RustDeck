@@ -56,3 +56,7 @@ Android excludes `horizon-mod-package::holder`, but upstream `runtime_leases::le
 ## I-013 — Hand-written patch hunks failed to apply
 Status: INVESTIGATING
 Patch 0006 failed twice at `git apply` (wrong hunk counts, then context that did not match upstream) before it applied. Lesson: create patches with `git diff` from a real checkout of upstream and run `git apply --check` before pushing, never write hunks by hand.
+
+## I-014 — Unauthenticated GitHub API limit
+Status: OPEN
+The app lists upstream releases without a token (60 requests per hour per IP). Upstream's launcher reads through a mirror past the limit (crate::github); RustDeck needs caching and a fallback, ideally from its own repo.
