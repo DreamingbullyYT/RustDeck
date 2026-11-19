@@ -259,3 +259,16 @@
 - Exact results: patches apply (local); the two runs after the fix are recorded in SESSION_LOG when they finish.
 - Not tested: n/a until those runs finish
 - Risks / follow-up: none new.
+
+## 2026-11-19 — First APK published
+- Change ID: C-2026-11-19-07
+- Commit: pending (replace with resulting commit SHA)
+- Status: IMPLEMENTED (the APK builds; it is NOT VERIFIED to run)
+- Motivation / observed problem: The user has no PC and asked for an APK.
+- Root cause: n/a
+- Files/modules affected: docs/project-memory/* (results only)
+- Implementation: documentation of runs 44468287424 (desktop) and 44468371147 (APK).
+- Tests/commands: the two workflow runs
+- Exact results: desktop check SUCCESS; APK built and signed, 50.9 MB, published to the `nightly` prerelease
+- Not tested: install, start, logs on a device
+- Risks / follow-up: I-008 (debug key), I-009 (event loops); read rustdeck.log from the first start.

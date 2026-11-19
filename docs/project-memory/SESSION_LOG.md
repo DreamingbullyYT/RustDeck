@@ -233,3 +233,16 @@ Verification:
 - Patches 0001-0004 still apply together on b45d73d (local).
 Limitations:
 - Desktop result after the fix: pending.
+
+## S-2026-11-19-07 — First APK built and published
+Date: 2026-11-19
+Commit: pending
+Goal: Read the desktop check re-run and the APK build.
+Changes:
+- None to code; results recorded.
+Verification:
+- Desktop check, run 44468287424 (upstream b45d73d + patches 0001-0004, `cargo check -p horizon-client`, Linux): SUCCESS.
+- APK build, run 44468371147 (workflow android-apk.yml, same upstream): `cargo build --profile fast --target aarch64-linux-android -p rustdeck-android` finished in 21m 47s (1 warning: unused import `EventLoop` at the changed call sites). Library 176 MB, 126 MB after llvm-strip. APK 50,950,596 bytes, build-tools 37.0.0, signature verified by apksigner (v2 and v3 schemes true). Published as asset RustDeck-nightly.apk of the prerelease `nightly`: https://github.com/DreamingbullyYT/RustDeck/releases/download/nightly/RustDeck-nightly.apk (repository is public).
+- Earlier runs with the wrong import in patch 0004 failed (desktop 44466410937, APK 44466413729).
+Limitations:
+- The APK has not been installed or started: whether it runs is unknown. Expected problems: I-009 (several event loops), game files/Java (I-006), graphics, mod host. A small unused-import warning remains in patch 0004.

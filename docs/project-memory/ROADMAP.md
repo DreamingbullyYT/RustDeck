@@ -7,7 +7,7 @@
 
 ## Phase 1 — Launcher core
 - Minimal launcher core aligned with upstream launcher core, with the official-launcher-style mobile UI (D-006).
-- Verified build in CI. (2026-11-19: Android `cargo check` is green; first APK build in progress, see D-013.)
+- Verified build in CI. (2026-11-19: Android `cargo check` is green; first APK built and published, not yet run, see D-013.)
 
 ## Phase 2 — Engine management
 - Fetch, verify, install and automatically update Horizon engine builds from this repo.

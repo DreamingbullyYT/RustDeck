@@ -35,5 +35,5 @@ Status: OPEN
 android/debug.keystore is in the repository and its password is public. Anyone can sign an APK that Android treats as an update of ours. Fine for a private test build; must be replaced by a key kept as a GitHub secret before updates (D-007) or any public distribution. Changing the key later means users must uninstall first.
 
 ## I-009 — Upstream opens several event loops one after another
-Status: OPEN (the APK build and first phone test will show it)
+Status: OPEN (the APK builds; the first phone test will show it)
 Upstream creates a new winit event loop for the resource screen, the loading screen and the game (crates/horizon-client/src/game/runtime/no_resources.rs, resource_loader.rs, loading_screen.rs). On Android winit may allow only one event loop per process, and a NativeActivity cannot restart its loop. Not verified; if confirmed, the game needs a single-loop path on Android (an engine change, to be offered upstream).
