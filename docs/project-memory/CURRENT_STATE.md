@@ -16,7 +16,7 @@ Repository HEAD: resolve dynamically from current main
 
 ## Not implemented / not verified
 - No launcher UI code. First APK: android/shell + android/build_apk.sh + .github/workflows/android-apk.yml (D-013); build result in SESSION_LOG.
-- .github/workflows/desktop-check.yml: manual desktop `cargo check` with the patches.
+- .github/workflows/desktop-check.yml: manual desktop `cargo check` with the patches (first run failed on a bug in patch 0004, now fixed; re-run 44468287424 pending).
 - PMCS CI: the last 5 runs on main passed (checked 2026-11-18, Actions).
 - No upstream revision observed/recorded yet (see UPSTREAM_SYNC.md).
 - UI is Kotlin with Compose (D-010); update mechanism/format, packaging and the Kotlin-to-Rust bridge are UNDECIDED. Release and nightly channels; CI builds automatically only when upstream has a new release or nightly, and skips otherwise; the newest build is installed (D-008).

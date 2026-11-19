@@ -246,3 +246,16 @@
 - Exact results: patches apply (local); workflow results in SESSION_LOG
 - Not tested: compile of the shell; APK install or start; desktop check
 - Risks / follow-up: I-008, I-009; the game may not start on Android.
+
+## 2026-11-19 — Fix patch 0004 import (found by the desktop check)
+- Change ID: C-2026-11-19-06
+- Commit: d26dbf2
+- Status: IMPLEMENTED
+- Motivation / observed problem: Desktop `cargo check` and the first APK build failed with E0603 in the new android_app.rs.
+- Root cause: `EventLoopError` is private in `winit::event_loop`; it is public in `winit::error`.
+- Files/modules affected: patches/upstream/0004-android-event-loop.patch
+- Implementation: import `winit::{error::EventLoopError, event_loop::EventLoop}`.
+- Tests/commands: git apply --check and applying patches 0001-0004 together on b45d73d; runs 44466410937 (failed before the fix), 44468287424 (desktop) and 44468371147 (APK) after it.
+- Exact results: patches apply (local); the two runs after the fix are recorded in SESSION_LOG when they finish.
+- Not tested: n/a until those runs finish
+- Risks / follow-up: none new.
