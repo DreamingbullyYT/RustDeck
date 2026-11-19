@@ -207,3 +207,16 @@
 - Exact results: both patches apply (local); CI result in SESSION_LOG
 - Not tested: compile; desktop build; any device
 - Risks / follow-up: I-007.
+
+## 2026-11-19 — Patch 0003: no mod holder on Android
+- Change ID: C-2026-11-19-03
+- Commit: pending (replace with resulting commit SHA)
+- Status: IMPLEMENTED
+- Motivation / observed problem: Run 5 failed on `horizon_mod_package::holder` in entry.rs.
+- Root cause: Upstream builds the holder only for Linux, macOS and Windows.
+- Files/modules affected: patches/upstream/0003-android-no-mod-holder.patch, docs/project-memory/*
+- Implementation: Android-gated skip of holder::enter() and acquire() in entry.rs.
+- Tests/commands: git apply --check and applying all three patches together on b45d73d; python scripts/validate_project_memory.py
+- Exact results: applies (local); CI result in a later SESSION_LOG entry
+- Not tested: compile; behavior without the holder
+- Risks / follow-up: the holder isolates the mod runtime; whether Android needs an equivalent is open.

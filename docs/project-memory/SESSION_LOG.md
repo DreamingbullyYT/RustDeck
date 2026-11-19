@@ -187,3 +187,15 @@ Verification:
 - Both new patches pass `git apply --check` and apply together on b45d73d. CI: pending.
 Limitations:
 - Not compiled; desktop build with patches not run; no device test.
+
+## S-2026-11-19-03 — Probe run 5 and patch 0003
+Date: 2026-11-19
+Commit: pending
+Goal: Read run 44464171681 (workflow at cee959d, upstream b45d73d, both patches applied).
+Changes:
+- Run 5 result: both patches applied; hidapi and horizon-client-input no longer fail; the many dependency crates compile. horizon-client (lib) FAILED with 2 errors, the same cause: crates/horizon-client/src/entry.rs lines 27 and 42 call `horizon_mod_package::holder`, which exists only for Linux, macOS and Windows (with feature runtime-process).
+- Added patches/upstream/0003-android-no-mod-holder.patch: skips the holder on Android.
+Verification:
+- All three patches pass `git apply --check` and apply together on b45d73d. CI: pending.
+Limitations:
+- Other users of `holder` exist outside the horizon-client check (crates/horizon-game/src/lib.rs:31, crates/horizon-hot-paths-game/src/main.rs:41) and may fail later. Compile check only; no device.

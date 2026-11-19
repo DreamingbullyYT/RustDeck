@@ -35,7 +35,8 @@ See the patches table below (D-012). Every intentional divergence must reference
 |---|---|---|
 | patches/upstream/0001-android-key-extensions.patch | Android has no winit `scancode` / `modifier_supplement` extensions: `raw_key_code` returns 0 and `window_handler.rs` uses the logical key on Android (crates/horizon-client-input/src/keybinds.rs, crates/horizon-client/src/game/runtime/window_handler.rs; Android-only cfg) | applies to b45d73d (git apply --check, local); not compiled yet |
 | patches/upstream/0002-android-dualsense-off.patch | gates crates/horizon-dualsense off on Android exactly as upstream already does for iOS (`target_os = "ios"` becomes `any(ios, android)`; mechanical, 7 files), so hidapi is not built | applies to b45d73d (git apply --check, local); not compiled yet |
+| patches/upstream/0003-android-no-mod-holder.patch | crates/horizon-client/src/entry.rs: the mod runtime holder (`horizon_mod_package::holder`, built only for Linux, macOS, Windows) is skipped on Android (`enter()` not called, no capture). Behavior difference: no holder on Android | applies to b45d73d (git apply --check, local); not compiled yet |
 
-Both patches are `cfg`-gated to Android; desktop code paths are unchanged (checked by reading the diffs; a desktop build with the patches has not been run).
+All three patches are `cfg`-gated to Android; desktop code paths are unchanged (checked by reading the diffs; a desktop build with the patches has not been run).
 
 Removed patches: the earlier winit-activity patch and the arboard/clipboard patch became unnecessary on 2026-11-19, when upstream commit 5cfd9f1 (#18358, "Unblock Android checks for the dedicated engine") added the same fixes (winit `android-native-activity` in crates/horizon-client/Cargo.toml, arboard off Android, `learn_layout` on Android).
