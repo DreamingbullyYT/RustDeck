@@ -282,7 +282,7 @@
 - Root cause: `horizon_game::main()` calls `horizon_guest_stack::prepare_main()`, which exits process code 1 if platform stack inspection returns an error. Android is excluded from the supported cfg branches.
 - Files/modules affected: patches/upstream/0005-android-guest-stack-startup.patch, docs/project-memory/*
 - Implementation: Android-specific `prepare()` returns success instead of fatal exit; no behavior changed for other platforms. Guest-stack safety remains an open concern.
-- Tests/commands: source diagnosis only; no patch apply, build, or test yet.
-- Exact results: root cause matches the log; patch added.
-- Not tested: whether 0005 applies to current upstream, APK compilation, launch, guest entry or stack safety.
+- Tests/commands: source diagnosis; Android APK workflow run 44496319805 attempted patch application and failed with `corrupt patch` due incorrect hunk counts. Hunk counts were corrected in commit 2c07940; next run pending.
+- Exact results: root cause matches the log; patch committed. First CI attempt failed before compilation, then patch syntax was corrected.
+- Not tested: successful application of corrected 0005, APK compilation, launch, guest entry or stack safety.
 - Risks / follow-up: I-010. Rebuild and device-test; if guest stack is still inadequate, design a real Android-compatible stack strategy rather than suppressing checks.
