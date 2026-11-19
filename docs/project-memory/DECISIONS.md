@@ -67,3 +67,9 @@ Changes RustDeck needs in upstream Horizon (engine or launcher core) are kept as
 Date: 2026-11-19
 Status: ACCEPTED
 RustDeck's first APK is a NativeActivity shell (android/shell, copied into the upstream checkout as crates/rustdeck-android by CI) that starts upstream's `horizon_game::main`. It is built by the manual workflow android-apk.yml from upstream `main` plus patches/upstream/, signed with a committed DEBUG key (android/debug.keystore, password `android`) and published as the `nightly` GitHub prerelease (D-008). It is a test build for the phone, not the launcher UI (D-009/D-010). It writes its log to <app external files dir>/rustdeck.log and logcat (tag RustDeck). Before any public release the signing key must be replaced by a secret one (I-008).
+
+
+## D-014 — Compose launcher activity separated from Horizon engine activity
+Date: 2026-11-19
+Status: ACCEPTED
+The Android APK has a Kotlin/Jetpack Compose launcher Activity as its entry point. Horizon remains a separate Android NativeActivity and is started only after RustDeck has prepared the game files. This keeps the launcher UI independent from the engine's native window and event loop. The Kotlin-to-Rust launcher-core bridge is still undecided; the first UI milestone must not pretend game preparation or Play is functional before that bridge and preparation pipeline exist.
