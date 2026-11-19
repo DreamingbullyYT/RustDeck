@@ -360,3 +360,22 @@ Verification:
 - This is source inspection only; no Android compile of `horizon-launcher` library has been run.
 Limitations:
 - Android engine artifact discovery/signature and loading, Java 25 availability, and game preparation on Android remain unresolved (I-006, I-011, I-003).
+
+
+## S-2026-11-19-15 — Diagnose first Compose APK workflow failure and fix SDK setup
+Date: 2026-11-19
+Commit: 398dcb9 (workflow fix)
+Goal: Diagnose the failed first Compose APK build and repair the failing step without changing application code speculatively.
+Evidence:
+- GitHub Actions run 44501544949 failed: https://github.com/DreamingbullyYT/RustDeck/actions/runs/44501544949
+- The Android Rust native library build step completed successfully.
+- Failure occurred at `Set up Android SDK` using `android-actions/setup-android@v3`, before SDK platform install, Gradle setup, Kotlin compilation or APK packaging.
+- Job log shows the action selected preinstalled sdkmanager 16.0, printed “Wrong version in preinstalled sdkmanager”, then attempted `sdkmanager tools`; SDK manager returned “Failed to find package 'tools'” and exit code 1.
+Change:
+- Removed the obsolete `android-actions/setup-android@v3` step. Ubuntu runner already provides `ANDROID_HOME` and command-line tools; workflow now calls `$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager` directly, accepts licenses and installs `platforms;android-36` and `build-tools;36.0.0`.
+- No Kotlin, Gradle or engine source was changed in this fix.
+Verification:
+- Failure cause is confirmed from the job logs.
+- Workflow fix committed as `398dcb9ebccdec8ef869db80745d61dfe00d8228`; retry/build result is pending.
+Next:
+- Inspect the next Android APK workflow run. If SDK install succeeds, proceed to Gradle/Kotlin compilation; do not call the app build verified until the APK is produced.
