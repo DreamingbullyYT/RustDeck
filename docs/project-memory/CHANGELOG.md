@@ -337,3 +337,10 @@
 - Files: app/src/main/java/com/rustdeck/app/{UpstreamReleases.kt,MainActivity.kt}
 - Tests: none locally; the Android APK workflow builds it.
 - Not tested: network call on the device, GitHub unauthenticated rate limit (60 per hour).
+
+## 2026-11-19 — Payload sync and updater
+- Change ID: C-2026-11-19-14
+- Commit: pending
+- Status: IMPLEMENTED (not VERIFIED)
+- Files: .github/workflows/payload-sync.yml, app/.../PayloadUpdater.kt, MainActivity.kt, DECISIONS.md (D-015)
+- Not tested: workflow run, manifest, download and sha256 check on the device.

@@ -60,3 +60,7 @@ Patch 0006 failed twice at `git apply` (wrong hunk counts, then context that did
 ## I-014 — Unauthenticated GitHub API limit
 Status: OPEN
 The app lists upstream releases without a token (60 requests per hour per IP). Upstream's launcher reads through a mirror past the limit (crate::github); RustDeck needs caching and a fallback, ideally from its own repo.
+
+## I-015 — Downloaded engine library is not loaded yet
+Status: OPEN
+The app can fetch and verify the engine, but NativeActivity loads its library only from the APK. A small stub library in the APK must dlopen the downloaded file; whether Android allows that from app storage on the target devices is unverified (I-003).

@@ -228,6 +228,24 @@ private fun InfoCard(title: String, value: String, subtitle: String, modifier: M
 }
 
 @Composable
+private fun EngineUpdateCard() {
+    val ctx = androidx.compose.ui.platform.LocalContext.current
+    var text by remember { mutableStateOf("Checking for engine updates…") }
+    LaunchedEffect(Unit) {
+        text = withContext(Dispatchers.IO) {
+            when (val r = PayloadUpdater.check(ctx)) {
+                is UpdateResult.UpToDate -> "Engine up to date · upstream ${r.installed.upstreamDate.take(10)} @ ${r.installed.upstreamSha.take(9)}"
+                is UpdateResult.Updated -> "Engine updated · upstream ${r.installed.upstreamDate.take(10)} @ ${r.installed.upstreamSha.take(9)}"
+                is UpdateResult.Failed -> "Engine update failed: ${r.message}"
+            }
+        }
+    }
+    Surface(color = PanelRaised, shape = RoundedCornerShape(20.dp), modifier = Modifier.fillMaxWidth()) {
+        Text(text, color = White, fontSize = 13.sp, modifier = Modifier.padding(18.dp))
+    }
+}
+
+@Composable
 private fun InstallationsScreen() {
     var state by remember { mutableStateOf<Result<List<UpstreamBuild>>?>(null) }
     var reload by remember { mutableIntStateOf(0) }
@@ -238,6 +256,7 @@ private fun InstallationsScreen() {
     Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
         Text("Installations", color = White, fontSize = 27.sp, fontWeight = FontWeight.Bold)
         Text("Horizon builds published upstream.", color = Muted, fontSize = 14.sp)
+        EngineUpdateCard()
         val s = state
         when {
             s == null -> Text("Loading…", color = Muted, fontSize = 14.sp)

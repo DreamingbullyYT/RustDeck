@@ -450,3 +450,11 @@ Evidence: User saw the UI working on the device. Upstream at 4e25c24d: backend::
 Change: app/.../UpstreamReleases.kt (GitHub releases list, launcher@ tags skipped) and InstallationsScreen shows tags, dates and Android availability.
 Verification: not built yet; CI run pending.
 Next: engine artifact and update metadata from RustDeck CI; Kotlin-Rust bridge.
+
+## S-2026-11-19-21 — Payload sync workflow and updater
+Date: 2026-11-19
+Commit: pending
+Goal: User asked for automatic patching of the newest upstream engine and launcher by date, installed on the phone only if newer than what is installed.
+Change: .github/workflows/payload-sync.yml (manifest and engine library in release `payloads`), app PayloadUpdater.kt plus a status card in Installations, D-015.
+Verification: none yet; workflow and app build pending. The downloaded library is not yet loaded by the engine Activity.
+Next: run payload-sync, check manifest; then loader stub for the downloaded library (I-003).

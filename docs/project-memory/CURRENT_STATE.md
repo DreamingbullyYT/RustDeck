@@ -37,3 +37,6 @@ Repository HEAD: resolve dynamically from current main
 
 ## Update 2026-11-19 (S-2026-11-19-20)
 - User confirmed the Compose UI renders on the phone. Installations now fetches upstream releases (unbuilt). Upstream has no Android asset.
+
+## Update 2026-11-19 (S-2026-11-19-21)
+- Payload sync workflow and app-side engine updater written (D-015), unverified. Engine Activity still uses the library bundled in the APK.

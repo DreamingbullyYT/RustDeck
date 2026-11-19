@@ -73,3 +73,9 @@ RustDeck's first APK is a NativeActivity shell (android/shell, copied into the u
 Date: 2026-11-19
 Status: ACCEPTED
 The Android APK has a Kotlin/Jetpack Compose launcher Activity as its entry point. Horizon remains a separate Android NativeActivity and is started only after RustDeck has prepared the game files. This keeps the launcher UI independent from the engine's native window and event loop. The Kotlin-to-Rust launcher-core bridge is still undecided; the first UI milestone must not pretend game preparation or Play is functional before that bridge and preparation pipeline exist.
+
+
+## D-015 — Date-driven payload sync and automatic engine update
+Date: 2026-11-19
+Status: ACCEPTED (design; user request 2026-11-19 20:50), implementation unverified
+The newest upstream build by DATE wins; release or nightly kind does not matter. .github/workflows/payload-sync.yml runs every 6 hours (and on patch changes): if upstream `main` has a commit newer than the engine in our `payloads` release manifest, it applies patches/upstream, builds the Android engine library and publishes librustdeck_engine.so plus manifest.json (sha256, upstream sha and date, patches hash). The app (PayloadUpdater.kt) downloads and verifies the payload only when it is newer than the installed one. Launcher-core and UI payload slots are added when those components exist. Loading a downloaded library from app storage into the NativeActivity is not yet implemented and unproven (I-003).

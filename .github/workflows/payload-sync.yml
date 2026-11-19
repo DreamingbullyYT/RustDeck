@@ -1,0 +1,130 @@
+name: Payload sync
+# D-015: when upstream Horizon main is newer (by date) than the engine we last published, apply our
+# patches (D-012), build the Android engine library and publish it with manifest.json to the
+# `payloads` release. The app installs a payload only when it is newer than the installed one.
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Build even if upstream has nothing newer'
+        type: boolean
+        default: false
+  push:
+    branches: [main]
+    paths:
+      - 'patches/upstream/**'
+      - 'android/shell/**'
+      - '.github/workflows/payload-sync.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: payload-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Check out RustDeck
+        uses: actions/checkout@v4
+        with:
+          path: rustdeck
+
+      - name: Compare upstream date with the published engine
+        id: check
+        run: |
+          set -euo pipefail
+          read -r SHA DATE < <(gh api repos/horizon-rust/horizon/commits/main -q '.sha+" "+.commit.committer.date')
+          LAUNCHER=$(gh api 'repos/horizon-rust/horizon/releases?per_page=30' -q '[.[]|select(.tag_name|startswith("launcher@"))][0]|.tag_name+" "+.published_at' || true)
+          echo "upstream main $SHA $DATE; launcher $LAUNCHER"
+          PUB_SHA=""; PUB_DATE=""; PUB_PATCHES=""
+          if curl -fsSL -o old.json "https://github.com/${{ github.repository }}/releases/download/payloads/manifest.json"; then
+            PUB_SHA=$(jq -r '.engine.upstream_sha // ""' old.json)
+            PUB_DATE=$(jq -r '.engine.upstream_date // ""' old.json)
+            PUB_PATCHES=$(jq -r '.engine.patches_hash // ""' old.json)
+          fi
+          PATCHES=$(cat rustdeck/patches/upstream/*.patch rustdeck/android/shell/* 2>/dev/null | sha256sum | cut -c1-16)
+          BUILD=false
+          if [ "${{ inputs.force }}" = "true" ] || [ -z "$PUB_SHA" ]; then BUILD=true
+          elif [ "$SHA" != "$PUB_SHA" ] && [[ "$DATE" > "$PUB_DATE" ]]; then BUILD=true
+          elif [ "$PATCHES" != "$PUB_PATCHES" ]; then BUILD=true; fi
+          {
+            echo "build=$BUILD"; echo "sha=$SHA"; echo "date=$DATE"
+            echo "launcher=$LAUNCHER"; echo "patches=$PATCHES"
+          } >> "$GITHUB_OUTPUT"
+          echo "build=$BUILD (published: ${PUB_SHA:-none} ${PUB_DATE})" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check out upstream Horizon at the observed revision
+        if: steps.check.outputs.build == 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: horizon-rust/horizon
+          ref: ${{ steps.check.outputs.sha }}
+          fetch-depth: 1
+          path: horizon
+
+      - name: Apply patches and add the Android shell
+        if: steps.check.outputs.build == 'true'
+        working-directory: horizon
+        run: |
+          set -euo pipefail
+          for p in ../rustdeck/patches/upstream/*.patch; do
+            git apply --check "$p"
+            git apply "$p"
+          done
+          cp -r ../rustdeck/android/shell crates/rustdeck-android
+          sed -i '0,/^members = \[/s//members = [\n    "crates\/rustdeck-android",/' Cargo.toml
+
+      - name: Install Rust with the Android target
+        if: steps.check.outputs.build == 'true'
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android
+
+      - name: Cache cargo
+        if: steps.check.outputs.build == 'true'
+        uses: Swatinem/rust-cache@v2.7.5
+        with:
+          workspaces: horizon
+          cache-on-failure: true
+
+      - name: Build the engine library
+        if: steps.check.outputs.build == 'true'
+        working-directory: horizon
+        run: |
+          set -euo pipefail
+          BIN="$ANDROID_NDK_LATEST_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin"
+          export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER="$BIN/aarch64-linux-android26-clang"
+          export CC_aarch64_linux_android="$BIN/aarch64-linux-android26-clang"
+          export CXX_aarch64_linux_android="$BIN/aarch64-linux-android26-clang++"
+          export AR_aarch64_linux_android="$BIN/llvm-ar"
+          cargo build --profile fast --target aarch64-linux-android -p rustdeck-android
+          SO=target/aarch64-linux-android/fast/librustdeck_android.so
+          "$BIN/llvm-strip" --strip-unneeded "$SO"
+          cp "$SO" ../librustdeck_engine.so
+
+      - name: Write manifest and publish the payloads release
+        if: steps.check.outputs.build == 'true'
+        run: |
+          set -euo pipefail
+          SUM=$(sha256sum librustdeck_engine.so | cut -d' ' -f1)
+          SIZE=$(stat -c %s librustdeck_engine.so)
+          jq -n --arg sha "${{ steps.check.outputs.sha }}" --arg date "${{ steps.check.outputs.date }}" \
+            --arg ph "${{ steps.check.outputs.patches }}" --arg sum "$SUM" --argjson size "$SIZE" \
+            --arg launcher "${{ steps.check.outputs.launcher }}" --arg built "$(date -u +%FT%TZ)" '{
+              schema: 1, built_at: $built,
+              engine: {file: "librustdeck_engine.so", abi: "arm64-v8a", sha256: $sum, size: $size,
+                       upstream_sha: $sha, upstream_date: $date, patches_hash: $ph},
+              launcher_upstream: $launcher }' > manifest.json
+          cat manifest.json
+          cd rustdeck
+          gh release view payloads >/dev/null 2>&1 || gh release create payloads --prerelease \
+            --title "RustDeck payloads" --notes "Engine library and manifest.json fetched by the app. Not for manual download."
+          gh release upload payloads ../librustdeck_engine.so ../manifest.json --clobber
