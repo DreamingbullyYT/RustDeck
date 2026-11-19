@@ -23,6 +23,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -83,12 +85,15 @@ private fun RustDeckApp() {
             verticalArrangement = Arrangement.spacedBy(18.dp)
         ) {
             Header()
-            when (selectedTab) {
-                0 -> HomeScreen(onInstall = { selectedTab = 1 })
-                1 -> InstallationsScreen()
-                else -> SettingsScreen()
+            Box(modifier = Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState())) {
+                Column {
+                    when (selectedTab) {
+                        0 -> HomeScreen(onInstall = { selectedTab = 1 })
+                        1 -> InstallationsScreen()
+                        else -> SettingsScreen()
+                    }
+                }
             }
-            Spacer(Modifier.weight(1f))
             Row(
                 modifier = Modifier.fillMaxWidth()
                     .clip(RoundedCornerShape(20.dp))
@@ -157,7 +162,7 @@ private fun Header() {
         ) {
             Box(Modifier.size(7.dp).clip(CircleShape).background(Color(0xFFFFC66D)))
             Spacer(Modifier.width(7.dp))
-            Text("OFFLINE", color = Color(0xFFFFD18B), fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+            Text("GUEST", color = Color(0xFFFFD18B), fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
         }
     }
 }
