@@ -5,9 +5,13 @@
 - Upstream `main` revision observed and recorded in UPSTREAM_SYNC.md.
 - UI stack and first milestone decided in DECISIONS.md.
 
-## Phase 1 — Launcher core
-- Minimal launcher core aligned with upstream launcher core, with the official-launcher-style mobile UI (D-006).
-- Verified build in CI. (2026-11-19: Android `cargo check` is green; first APK built and published. First device log identified a fatal unsupported guest-stack inspection; patch 0005 is an untested experiment.)
+## Phase 1 — Launcher UI and core
+- [x] Decide Kotlin + Jetpack Compose UI (D-010).
+- [x] Add initial Compose Home / Installations / Settings UI and separate engine NativeActivity (D-014); implementation is not yet build/device verified.
+- [ ] Build and install the Compose APK; verify portrait and landscape rendering.
+- [ ] Design and implement Kotlin-to-Rust launcher-core bridge.
+- [ ] Connect UI to upstream-aligned version listing, install, signature verification and preparation logic.
+- [ ] Keep Play unavailable until game preparation is complete and verified.
 
 ## Phase 2 — Engine management
 - Fetch, verify, install and automatically update Horizon engine builds from this repo.
