@@ -343,3 +343,20 @@ Next:
 - Let the new Android workflow complete; fix Gradle/Kotlin/manifest errors from real logs.
 - Install the Compose APK and verify both portrait and landscape.
 - Then design the Rust launcher-core bridge and preparation flow before enabling Play.
+
+
+## S-2026-11-19-14 — Inspect upstream launcher core for Android bridge
+Date: 2026-11-19
+Commit: pending
+Goal: Identify the lowest-divergence way to connect the Compose UI to Horizon's launcher logic.
+Findings:
+- Horizon has a reusable shared launcher library: `launcher/src/lib.rs` describes itself as “The launcher's core, shared by the GUI, the CLI and the MCP server.” It exports `backend`, `account`, `data_location`, `java`, `launch`, `sources`, etc.
+- Public backend operations include release listing, installation, installed-version listing, preparation selection and in-process preparation. Reusing this is preferable to copying upstream logic.
+- The launcher package currently includes desktop GPUI dependencies; Android compilation of the library without desktop UI dependencies has not been tested.
+- Upstream `backend::PLATFORMS` currently has only Linux x86_64, macOS x86_64/ARM64 and Windows x86_64/ARM64. Android has no release asset entry. RustDeck's Android engine is a NativeActivity shared library, so the desktop launcher's process-spawn path cannot simply be reused for Play.
+- The likely next technical experiment is a dependency-only Android cargo check of the upstream launcher library with desktop-only dependencies gated/disabled, followed by a small JNI boundary. Do not implement a second copy of the entire backend before this experiment.
+Verification:
+- Read upstream `launcher/src/lib.rs`, `launcher/src/backend.rs`, `launcher/src/backend/release_assets.rs`, `launcher/Cargo.toml`, `crates/horizon-platform/src/lib.rs`, and `crates/horizon-prepare/src/lib.rs` at revision `2d02b5e1a04c0e2ed224d4f218dc57d64b838aac`.
+- This is source inspection only; no Android compile of `horizon-launcher` library has been run.
+Limitations:
+- Android engine artifact discovery/signature and loading, Java 25 availability, and game preparation on Android remain unresolved (I-006, I-011, I-003).
