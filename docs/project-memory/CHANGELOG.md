@@ -272,3 +272,17 @@
 - Exact results: desktop check SUCCESS; APK built and signed, 50.9 MB, published to the `nightly` prerelease
 - Not tested: install, start, logs on a device
 - Risks / follow-up: I-008 (debug key), I-009 (event loops); read rustdeck.log from the first start.
+
+
+## 2026-11-19 — Diagnose blank startup and add Android guest-stack bypass experiment
+- Change ID: C-2026-11-19-08
+- Commit: 33618a8
+- Status: IMPLEMENTED (patch committed; not tested)
+- Motivation / observed problem: User's first APK launch showed a blank dark screen; actual log contained `GuestStackUnavailable: stack inspection is unsupported on this platform`.
+- Root cause: `horizon_game::main()` calls `horizon_guest_stack::prepare_main()`, which exits process code 1 if platform stack inspection returns an error. Android is excluded from the supported cfg branches.
+- Files/modules affected: patches/upstream/0005-android-guest-stack-startup.patch, docs/project-memory/*
+- Implementation: Android-specific `prepare()` returns success instead of fatal exit; no behavior changed for other platforms. Guest-stack safety remains an open concern.
+- Tests/commands: source diagnosis only; no patch apply, build, or test yet.
+- Exact results: root cause matches the log; patch added.
+- Not tested: whether 0005 applies to current upstream, APK compilation, launch, guest entry or stack safety.
+- Risks / follow-up: I-010. Rebuild and device-test; if guest stack is still inadequate, design a real Android-compatible stack strategy rather than suppressing checks.
