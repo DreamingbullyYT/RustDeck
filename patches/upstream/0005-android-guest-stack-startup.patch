@@ -2,7 +2,7 @@ diff --git a/crates/horizon-guest-stack/src/lib.rs b/crates/horizon-guest-stack/
 index 00000000..00000000 100644
 --- a/crates/horizon-guest-stack/src/lib.rs
 +++ b/crates/horizon-guest-stack/src/lib.rs
-@@ -43,7 +43,13 @@ pub fn prepare_main() {
+@@ -43,6 +43,14 @@ pub fn prepare_main() {
      }
  }
  
