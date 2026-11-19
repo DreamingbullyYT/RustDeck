@@ -286,3 +286,14 @@
 - Exact results: corrected patch applies; compilation is in progress.
 - Not tested: build completion, APK, launch, guest entry or stack safety.
 - Risks / follow-up: I-010. Rebuild and device-test; if guest stack is still inadequate, design a real Android-compatible stack strategy rather than suppressing checks.
+
+
+## 2026-11-19 — First RustDeck Compose launcher UI
+- Change ID: C-2026-11-19-09
+- Commit: bf11cdc (workflow trigger); app and Gradle files are in preceding commits.
+- Status: IMPLEMENTED (build and device verification pending)
+- Motivation: The first device APK exposed Horizon's upstream “No prepared game files” screen because RustDeck had only a NativeActivity test shell and no launcher UI.
+- Files/modules affected: `settings.gradle.kts`, `build.gradle.kts`, `gradle.properties`, `app/**`, `.github/workflows/android-apk.yml`, removed `android/AndroidManifest.xml` and `android/build_apk.sh`, PMCS.
+- Implementation: Added Compose Home/Installations/Settings UI; split the launcher Activity from Horizon's NativeActivity; migrated APK assembly to Gradle and included the native library as jniLibs. Added D-014.
+- Tests/commands: Workflow run 44501297217 was cancelled during native cargo compilation; no Gradle/Kotlin result. No device test.
+- Risks/follow-up: UI is presentation-only; Rust core bridge, version/install/auth/signature/prepare and Play flow remain unimplemented. D-007 update-without-APK remains unproven.
