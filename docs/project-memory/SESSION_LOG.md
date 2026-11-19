@@ -318,3 +318,28 @@ Limitations:
 - No prepared Minecraft files, actual RustDeck launcher UI, game launch or gameplay verified. This is still the test shell described by D-013.
 Next:
 - Implement the Kotlin/Jetpack Compose launcher UI and connect it to Rust launcher core so game files are prepared before starting Horizon, following D-006 through D-011 and keeping upstream divergence minimal.
+
+
+## S-2026-11-19-13 — Add first Kotlin/Compose launcher app and Gradle APK packaging
+Date: 2026-11-19
+Commit: bf11cdc (workflow trigger update; app files committed immediately before)
+Goal: Replace the test-shell-only Android entry point with the first real RustDeck launcher UI while preserving Horizon's native engine as a separate Activity.
+Changes:
+- Added root Gradle project files: `settings.gradle.kts`, `build.gradle.kts`, `gradle.properties`.
+- Added `app/` Android application module with Kotlin 2.2.21, AGP 8.13.2, Compose compiler plugin and Compose BOM 2025.10.00.
+- Added `MainActivity.kt`: Home, Installations and Settings screens; animated gradient background; responsive scroll region; guest/account indicator; Nightly channel information. The install CTA navigates to Installations. It deliberately does not claim to install or launch a game.
+- Replaced the old NativeActivity launcher manifest with an app manifest: Compose `MainActivity` is the launcher entry point; Horizon `android.app.NativeActivity` remains a separate non-exported landscape Activity.
+- Migrated APK packaging workflow to Gradle: it builds the Rust native library, copies it into `app/src/main/jniLibs/arm64-v8a`, assembles the Compose APK, and publishes it to the existing nightly prerelease. Added `app/**` to workflow path triggers.
+- Removed obsolete top-level NativeActivity-only manifest and direct aapt2 packaging script.
+- Added D-014 describing the Compose/engine Activity split; updated ARCHITECTURE, CURRENT_STATE, ROADMAP, AI_HANDOFF and I-002.
+Verification:
+- GitHub workflow run 44501297217 started but was cancelled by later commits while Rust native compilation was in progress. No Gradle configuration or Kotlin compilation result exists yet.
+- No device installation or visual verification of the Compose UI yet.
+Limitations / risks:
+- The Kotlin-to-Rust launcher-core bridge remains undecided. The UI currently uses presentation-only state and has no install/auth/version/prepare functionality.
+- D-007 (update UI/core/engine without APK) remains unproven; dynamically updating Kotlin/Compose code is a separate Android packaging/security problem.
+- Android guest stack safety, game preparation/JDK 25 and multiple winit event-loop behavior remain open.
+Next:
+- Let the new Android workflow complete; fix Gradle/Kotlin/manifest errors from real logs.
+- Install the Compose APK and verify both portrait and landscape.
+- Then design the Rust launcher-core bridge and preparation flow before enabling Play.
