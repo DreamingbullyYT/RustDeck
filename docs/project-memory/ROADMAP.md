@@ -9,7 +9,7 @@
 - [x] Decide Kotlin + Jetpack Compose UI (D-010).
 - [x] Add initial Compose Home / Installations / Settings UI and separate engine NativeActivity (D-014); implementation is not yet build/device verified.
 - [ ] Build and install the Compose APK; verify portrait and landscape rendering.
-- [ ] Design and implement Kotlin-to-Rust launcher-core bridge.
+- [ ] Decide and implement Kotlin-to-Rust launcher-core bridge (I-011).
 - [ ] Connect UI to upstream-aligned version listing, install, signature verification and preparation logic.
 - [ ] Keep Play unavailable until game preparation is complete and verified.
 
