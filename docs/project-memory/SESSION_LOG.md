@@ -210,3 +210,14 @@ Verification:
 - horizon-client (lib) `cargo check` for aarch64-linux-android FINISHED successfully (5m 00s). No errors.
 Limitations:
 - Type check only: not linked, not built in release, not run. Other crates that use `holder` (horizon-game, horizon-hot-paths-game) were not checked. Desktop build with patches not run.
+
+## S-2026-11-19-05 — First APK pipeline
+Date: 2026-11-19
+Commit: pending
+Goal: Build a first APK and check desktop is unaffected, as the user asked.
+Changes:
+- Added the Android shell, APK script, debug keystore, the two workflows, patch 0004 and extended 0003.
+Verification:
+- Patches 0001-0004 apply together on b45d73d (local). Workflow runs: pending.
+Limitations:
+- Nothing compiled for the shell yet; no device test.

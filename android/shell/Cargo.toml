@@ -1,0 +1,18 @@
+# RustDeck's Android shell: a NativeActivity library that starts upstream Horizon's game.
+# It is copied into the upstream checkout as crates/rustdeck-android by the workflow, so it uses
+# upstream's workspace (lockfile, [patch] entries, edition). It is not part of upstream.
+[package]
+name = "rustdeck-android"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+horizon-game = { path = "../horizon-game" }
+horizon-client = { path = "../horizon-client", default-features = false }
+winit = { version = "0.30.13", features = ["android-native-activity"] }
+libc = "0.2"

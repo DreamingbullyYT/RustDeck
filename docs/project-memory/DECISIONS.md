@@ -62,3 +62,8 @@ For game preparation on Android, the prototype bundles a JDK 25 build for Androi
 Date: 2026-11-18
 Status: ACCEPTED
 Changes RustDeck needs in upstream Horizon (engine or launcher core) are kept as small patch files in patches/upstream/, applied in CI to a fresh checkout of upstream `main`, and new code goes in separate files where possible, so upstream files change as little as possible (D-002). Fixes that make sense for everyone are offered upstream as PRs; once merged, the patch is deleted. Patches that stop applying after an upstream change must be refreshed, and that is recorded in UPSTREAM_SYNC.md.
+
+## D-013 — First APK is a test shell; published as the `nightly` prerelease
+Date: 2026-11-19
+Status: ACCEPTED
+RustDeck's first APK is a NativeActivity shell (android/shell, copied into the upstream checkout as crates/rustdeck-android by CI) that starts upstream's `horizon_game::main`. It is built by the manual workflow android-apk.yml from upstream `main` plus patches/upstream/, signed with a committed DEBUG key (android/debug.keystore, password `android`) and published as the `nightly` GitHub prerelease (D-008). It is a test build for the phone, not the launcher UI (D-009/D-010). It writes its log to <app external files dir>/rustdeck.log and logcat (tag RustDeck). Before any public release the signing key must be replaced by a secret one (I-008).

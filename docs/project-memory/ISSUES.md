@@ -29,3 +29,11 @@ Upstream preparation needs JDK 25 and the player's own Minecraft files (or Mojan
 ## I-007 — Patches break when upstream moves
 Status: INVESTIGATING
 Upstream `main` changes daily (D-005). On 2026-11-19 two patches stopped applying and the probe workflow did not fail on it, so its result was misleading; the workflow now fails on a patch that does not apply. Upstream also started Android work itself (5cfd9f1), which makes patches obsolete: re-check upstream before writing new ones.
+
+## I-008 — APK signed with a committed debug key
+Status: OPEN
+android/debug.keystore is in the repository and its password is public. Anyone can sign an APK that Android treats as an update of ours. Fine for a private test build; must be replaced by a key kept as a GitHub secret before updates (D-007) or any public distribution. Changing the key later means users must uninstall first.
+
+## I-009 — Upstream opens several event loops one after another
+Status: OPEN
+Upstream creates a new winit event loop for the resource screen, the loading screen and the game (crates/horizon-client/src/game/runtime/no_resources.rs, resource_loader.rs, loading_screen.rs). On Android winit may allow only one event loop per process, and a NativeActivity cannot restart its loop. Not verified; if confirmed, the game needs a single-loop path on Android (an engine change, to be offered upstream).

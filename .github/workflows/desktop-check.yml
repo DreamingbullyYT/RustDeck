@@ -1,0 +1,76 @@
+name: Desktop check
+# Proves the Android patches leave desktop untouched: upstream Horizon main + patches/upstream/,
+# `cargo check -p horizon-client` on Linux (D-002, D-012). Manual only.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: desktop-check
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Check out RustDeck
+        uses: actions/checkout@v4
+        with:
+          path: rustdeck
+
+      - name: Check out upstream Horizon main
+        uses: actions/checkout@v4
+        with:
+          repository: horizon-rust/horizon
+          ref: main
+          fetch-depth: 1
+          path: horizon
+
+      - name: Record upstream revision
+        working-directory: horizon
+        run: |
+          echo "horizon-rust/horizon @ $(git rev-parse HEAD) ($(git log -1 --format=%cs))" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Apply RustDeck patches to upstream
+        working-directory: horizon
+        run: |
+          set -euo pipefail
+          for p in ../rustdeck/patches/upstream/*.patch; do
+            echo "applying $p"
+            git apply --check "$p"
+            git apply "$p"
+          done
+
+      - name: Linux build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pkg-config libasound2-dev libudev-dev libwayland-dev libxkbcommon-dev libx11-dev libxcursor-dev libxi-dev libxrandr-dev libxkbcommon-x11-dev
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2.7.5
+        with:
+          workspaces: horizon
+          cache-on-failure: true
+
+      - name: cargo check horizon-client (Linux)
+        working-directory: horizon
+        run: |
+          rustc --version
+          cargo check -p horizon-client 2>&1 | tee check.log
+          exit "${PIPESTATUS[0]}"
+
+      - name: Summary
+        if: always()
+        working-directory: horizon
+        run: |
+          {
+            echo "## Desktop check"
+            echo '```'
+            grep -m 20 -E '^error' check.log || echo "no errors"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

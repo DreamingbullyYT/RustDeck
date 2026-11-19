@@ -1,0 +1,120 @@
+name: Android APK
+# Builds RustDeck's Android shell around upstream Horizon main (D-005: no pinning) with the small
+# patches in patches/upstream/ (D-012), packages a signed debug APK and publishes it as the
+# `nightly` prerelease so it can be downloaded on the phone (D-008). It is a TEST build: it starts
+# upstream's game code; it is not known to run (I-004). Manual only.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-apk
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - name: Check out RustDeck
+        uses: actions/checkout@v4
+        with:
+          path: rustdeck
+
+      - name: Check out upstream Horizon main
+        uses: actions/checkout@v4
+        with:
+          repository: horizon-rust/horizon
+          ref: main
+          fetch-depth: 1
+          path: horizon
+
+      - name: Record upstream revision
+        id: up
+        working-directory: horizon
+        run: |
+          echo "sha=$(git rev-parse --short=9 HEAD)" >> "$GITHUB_OUTPUT"
+          echo "## Upstream" >> "$GITHUB_STEP_SUMMARY"
+          echo "horizon-rust/horizon @ $(git rev-parse HEAD) ($(git log -1 --format=%cs))" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Apply RustDeck patches and add the Android shell
+        working-directory: horizon
+        run: |
+          set -euo pipefail
+          for p in ../rustdeck/patches/upstream/*.patch; do
+            echo "applying $p"
+            git apply --check "$p"
+            git apply "$p"
+          done
+          cp -r ../rustdeck/android/shell crates/rustdeck-android
+          sed -i '0,/^members = \[/s//members = [\n    "crates\/rustdeck-android",/' Cargo.toml
+          grep -n "rustdeck-android" Cargo.toml
+          git status --short
+
+      - name: Install Rust with the Android target
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2.7.5
+        with:
+          workspaces: horizon
+          cache-on-failure: true
+
+      - name: Point cargo at the Android NDK
+        run: |
+          NDK="$ANDROID_NDK_LATEST_HOME"
+          BIN="$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin"
+          echo "NDK: $NDK"
+          {
+            echo "ANDROID_NDK_BIN=$BIN"
+            echo "CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$BIN/aarch64-linux-android26-clang"
+            echo "CC_aarch64_linux_android=$BIN/aarch64-linux-android26-clang"
+            echo "CXX_aarch64_linux_android=$BIN/aarch64-linux-android26-clang++"
+            echo "AR_aarch64_linux_android=$BIN/llvm-ar"
+          } >> "$GITHUB_ENV"
+
+      - name: cargo build rustdeck-android (Android, fast profile)
+        working-directory: horizon
+        run: |
+          rustc --version
+          cargo build --profile fast --target aarch64-linux-android -p rustdeck-android 2>&1 | tee build.log
+          exit "${PIPESTATUS[0]}"
+
+      - name: Package the APK
+        run: |
+          set -euo pipefail
+          SO=horizon/target/aarch64-linux-android/fast/librustdeck_android.so
+          ls -l "$SO"
+          "$ANDROID_NDK_BIN/llvm-strip" --strip-unneeded "$SO"
+          ls -l "$SO"
+          rustdeck/android/build_apk.sh "$SO" RustDeck-nightly.apk "${{ github.run_number }}" "0.0.${{ github.run_number }}-nightly+${{ steps.up.outputs.sha }}"
+
+      - name: Upload APK as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RustDeck-nightly-apk
+          path: RustDeck-nightly.apk
+
+      - name: Publish to the nightly prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cd rustdeck
+          gh release view nightly >/dev/null 2>&1 || gh release create nightly --prerelease \
+            --title "RustDeck nightly (test build)" \
+            --notes "Test builds of the RustDeck Android shell around upstream Horizon main. Not a playable game yet."
+          gh release upload nightly ../RustDeck-nightly.apk --clobber
+          gh release edit nightly --notes "Latest: run ${{ github.run_number }}, upstream horizon-rust/horizon @ ${{ steps.up.outputs.sha }}. Test build of the RustDeck Android shell; not a playable game yet."
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-build-log
+          path: horizon/build.log
+          if-no-files-found: ignore

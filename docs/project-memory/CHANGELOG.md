@@ -233,3 +233,16 @@
 - Exact results: `cargo check` finished successfully in 5m 00s
 - Not tested: linking, a release build, running on a device, desktop build with the patches
 - Risks / follow-up: a passing type check says nothing about whether the client starts on Android (windowing, graphics, assets, the holder skipped).
+
+## 2026-11-19 — First APK pipeline and desktop check
+- Change ID: C-2026-11-19-05
+- Commit: pending (replace with resulting commit SHA)
+- Status: IMPLEMENTED
+- Motivation / observed problem: The user has no PC and wants an APK now; desktop must stay unchanged.
+- Root cause: n/a
+- Files/modules affected: android/ (shell crate, manifest, build_apk.sh, debug.keystore), .github/workflows/android-apk.yml, desktop-check.yml, patches/upstream/0003 (extended to horizon-game) and 0004 (new), docs/project-memory/*
+- Implementation: Shell crate with android_main, log to file and logcat, calls horizon_game::main; APK packaged with aapt2/zipalign/apksigner; published to the `nightly` prerelease. Desktop `cargo check` workflow.
+- Tests/commands: git apply --check and applying patches 0001-0004 together on b45d73d; bash -n on build_apk.sh; python scripts/validate_project_memory.py
+- Exact results: patches apply (local); workflow results in SESSION_LOG
+- Not tested: compile of the shell; APK install or start; desktop check
+- Risks / follow-up: I-008, I-009; the game may not start on Android.

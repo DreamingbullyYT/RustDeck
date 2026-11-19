@@ -15,7 +15,8 @@ Repository HEAD: resolve dynamically from current main
 - .github/workflows/android-client-probe.yml: manual experiment that runs `cargo check` of upstream's horizon-client-render and horizon-client for aarch64-linux-android. Results (2026-11-18): it fails to compile; first blockers are the winit activity feature and arboard (see SESSION_LOG S-2026-11-18-12).
 
 ## Not implemented / not verified
-- No launcher code.
+- No launcher UI code. First APK: android/shell + android/build_apk.sh + .github/workflows/android-apk.yml (D-013); build result in SESSION_LOG.
+- .github/workflows/desktop-check.yml: manual desktop `cargo check` with the patches.
 - PMCS CI: the last 5 runs on main passed (checked 2026-11-18, Actions).
 - No upstream revision observed/recorded yet (see UPSTREAM_SYNC.md).
 - UI is Kotlin with Compose (D-010); update mechanism/format, packaging and the Kotlin-to-Rust bridge are UNDECIDED. Release and nightly channels; CI builds automatically only when upstream has a new release or nightly, and skips otherwise; the newest build is installed (D-008).

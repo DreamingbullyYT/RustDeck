@@ -1,0 +1,86 @@
+diff --git a/crates/horizon-client/src/android_app.rs b/crates/horizon-client/src/android_app.rs
+new file mode 100644
+index 00000000..44510cf1
+--- /dev/null
++++ b/crates/horizon-client/src/android_app.rs
+@@ -0,0 +1,29 @@
++//! The winit event loop. Android needs the `AndroidApp` that `android_main` receives for every
++//! event loop it builds (RustDeck patch 0004); elsewhere this is `EventLoop::new()`.
++
++use winit::event_loop::{EventLoop, EventLoopError};
++
++#[cfg(target_os = "android")]
++static APP: std::sync::OnceLock<winit::platform::android::activity::AndroidApp> =
++    std::sync::OnceLock::new();
++
++/// Stores the `AndroidApp` for the event loops built later. Called once by `android_main`.
++#[cfg(target_os = "android")]
++pub fn set_app(app: winit::platform::android::activity::AndroidApp) {
++    let _ = APP.set(app);
++}
++
++/// A new event loop for this platform.
++pub fn event_loop() -> Result<EventLoop<()>, EventLoopError> {
++    #[cfg(target_os = "android")]
++    {
++        use winit::platform::android::EventLoopBuilderExtAndroid;
++        let app = APP
++            .get()
++            .expect("android_main stores the AndroidApp before the game starts")
++            .clone();
++        EventLoop::builder().with_android_app(app).build()
++    }
++    #[cfg(not(target_os = "android"))]
++    EventLoop::new()
++}
+diff --git a/crates/horizon-client/src/game/runtime/loading_screen.rs b/crates/horizon-client/src/game/runtime/loading_screen.rs
+index 8489455d..0c3ad190 100644
+--- a/crates/horizon-client/src/game/runtime/loading_screen.rs
++++ b/crates/horizon-client/src/game/runtime/loading_screen.rs
+@@ -33,7 +33,7 @@ pub(super) fn run_event_loop(mut game: Game<'_>) -> Result<()> {
+         return result;
+     }
+     let mut split = split::Split::new(game);
+-    let result = EventLoop::new()?.run_app(&mut split);
++    let result = crate::android_app::event_loop()?.run_app(&mut split);
+     game = split.host;
+     narrator::stop();
+     leave_fullscreen_after(&result, &mut game.settings);
+diff --git a/crates/horizon-client/src/game/runtime/no_resources.rs b/crates/horizon-client/src/game/runtime/no_resources.rs
+index 21bf36ad..3d6f2dc0 100644
+--- a/crates/horizon-client/src/game/runtime/no_resources.rs
++++ b/crates/horizon-client/src/game/runtime/no_resources.rs
+@@ -42,7 +42,7 @@ pub(super) fn show(looked_in: &std::path::Path, settings: &Settings) -> Result<(
+         error: None,
+     };
+ 
+-    EventLoop::new()?.run_app(&mut app)?;
++    crate::android_app::event_loop()?.run_app(&mut app)?;
+     app.error.map_or(Ok(()), Err)
+ }
+ 
+diff --git a/crates/horizon-client/src/game/runtime/resource_loader.rs b/crates/horizon-client/src/game/runtime/resource_loader.rs
+index 89510ab1..82fdf3b7 100644
+--- a/crates/horizon-client/src/game/runtime/resource_loader.rs
++++ b/crates/horizon-client/src/game/runtime/resource_loader.rs
+@@ -295,7 +295,7 @@ pub(super) fn run_loading(
+         error: None,
+     };
+     let mut app = App::Loading(Box::new(loading));
+-    let result = EventLoop::new()?.run_app(&mut app);
++    let result = crate::android_app::event_loop()?.run_app(&mut app);
+     narrator::stop();
+     match &mut app {
+         // Ready: splitscreen around P1's game.
+diff --git a/crates/horizon-client/src/lib.rs b/crates/horizon-client/src/lib.rs
+index 9e73fa3d..7a09de8b 100644
+--- a/crates/horizon-client/src/lib.rs
++++ b/crates/horizon-client/src/lib.rs
+@@ -6,6 +6,7 @@ extern crate self as horizon_client;
+ pub use horizon_client_lib::carrier_store;
+ pub use horizon_client_lib::*;
+ #[doc(hidden)]
++pub mod android_app;
+ pub mod entry;
+ 
+ // The game's allocator lives in the library, not the executable: the prebuilt game (arismoko/horizon#589) is this crate as a
