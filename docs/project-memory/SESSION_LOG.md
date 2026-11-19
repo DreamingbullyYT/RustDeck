@@ -395,3 +395,19 @@ Verification:
 - Failure diagnosed from job log. Fix committed; retry/build pending.
 Next:
 - Watch next APK workflow. If SDK packages install, debug Gradle or Kotlin build from logs as needed.
+
+
+## S-2026-11-19-17 — Diagnose Android Rust compile failure and patch cfg mismatch
+Date: 2026-11-19
+Commit: 16d6f4f7ec30a89b2873e3b0e9061db97867a414 (patch 0006)
+Goal: Diagnose third Compose APK workflow failure and fix the Android-only compile issue with a minimal patch.
+Evidence:
+- Run 44513128759 failed in `cargo build rustdeck-android`; SDK, Gradle and Kotlin steps were skipped.
+- Compiler error E0433 at `crates/horizon-mod-package/src/runtime_leases.rs:431`: `crate::holder` absent on Android. Upstream `crates/horizon-mod-package/src/lib.rs` cfg-gates `holder` and `local_control` to Linux/macOS/Windows, while `runtime_leases::lease_units()` was still compiled with `runtime-process` on Android and calls `holder::lease_paths`. E0277 for unsized `[u8]` is derivative from this unresolved call.
+Change:
+- Added `patches/upstream/0006-android-gate-holder-dependent-lease-units.patch`, adding the same desktop OS cfg to `lease_units`; helper is not used by the Android shell. No engine behavior changes on desktop.
+Verification:
+- Cause confirmed from the Actions compiler log and upstream source.
+- Patch created; next build must confirm it applies and compiles. Not yet verified.
+Next:
+- Inspect next Android workflow run. If native compile passes, continue SDK/Gradle/Kotlin packaging and address the next actual error.
