@@ -85,3 +85,9 @@ The newest upstream build by DATE wins; release or nightly kind does not matter.
 Date: 2026-11-19
 Status: ACCEPTED (implementation unverified)
 The APK's `librustdeck_android.so` is now a small standalone Rust loader (android/loader). NativeActivity calls its `ANativeActivity_onCreate`, which dlopens <internal data>/payloads/librustdeck_engine.so (the verified download from D-015) and forwards the call; if that file is missing or fails to load it uses `librustdeck_engine_bundled.so` from the APK. Whether Android lets dlopen load a library from app storage on the user's phone is unverified (I-003, I-015).
+
+
+## D-017 — No Horizon launcher core; RustDeck keeps the engine only
+Date: 2026-11-19
+Status: ACCEPTED (user, 2026-11-19 21:51)
+RustDeck drops the upstream launcher core (the `launcher/` library: install, version listing, accounts, instances). It keeps the engine (MIT) and engine-side crates such as `horizon-prepare` and the engine's own launch options. Version listing, installation, verification and updates are RustDeck's own (CI manifest D-015, Kotlin app). This supersedes the launcher-core parts of D-001, D-005, D-007, D-009, D-011 and D-014 and ends I-011 as planned (the bridge to the upstream launcher core is no longer needed). The `launcher_upstream` manifest field is informational only. Accounts, instances and game preparation for Android are to be designed (I-006).

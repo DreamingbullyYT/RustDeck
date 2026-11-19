@@ -233,7 +233,7 @@ private fun EngineUpdateCard() {
     var text by remember { mutableStateOf("Checking for engine updates…") }
     LaunchedEffect(Unit) {
         text = withContext(Dispatchers.IO) {
-            when (val r = PayloadUpdater.check(ctx)) {
+            when (val r = PayloadUpdater.check(ctx) { p -> text = p }) {
                 is UpdateResult.UpToDate -> "Engine up to date · upstream ${r.installed.upstreamDate.take(10)} @ ${r.installed.upstreamSha.take(9)}"
                 is UpdateResult.Updated -> "Engine updated · upstream ${r.installed.upstreamDate.take(10)} @ ${r.installed.upstreamSha.take(9)}"
                 is UpdateResult.Failed -> "Engine update failed: ${r.message}"

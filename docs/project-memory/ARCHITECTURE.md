@@ -31,3 +31,6 @@ Status: PARTIALLY DECIDED. Product/UI direction and UI technology are accepted i
 - Which parts live in the APK shell vs updatable payloads
 - How the launcher obtains, verifies and updates engine builds
 - How the launcher core stays in sync with upstream
+
+## Update 2026-11-19 (D-017)
+No upstream launcher core. Kotlin app plus the engine library only; the bullets above about a launcher-core bridge are obsolete.

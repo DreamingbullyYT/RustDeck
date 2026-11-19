@@ -35,3 +35,5 @@
 - 2026-11-19: payload-sync first run failed and was fixed; retry pending.
 
 - 2026-11-19: loader stub written (D-016); build and device check pending.
+
+- 2026-11-19 (D-017): launcher core removed from the plan; the Kotlin-to-launcher-core bridge item no longer applies. Next: game preparation on Android (I-006).

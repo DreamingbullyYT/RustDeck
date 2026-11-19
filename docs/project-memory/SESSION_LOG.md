@@ -472,3 +472,11 @@ Goal: Let the engine Activity run the downloaded engine (user said continue).
 Change: android/loader (Rust cdylib), android-apk.yml builds it and packages the CI-built engine as librustdeck_engine_bundled.so; D-016. Payload sync run 44592390644 succeeded earlier and published librustdeck_engine.so and manifest.json.
 Verification: none yet; APK build pending, no device test.
 Next: user tests the Play path later; device log lines 'loader: using ...' show which engine loaded.
+
+## S-2026-11-19-24 — Drop launcher core; show download progress
+Date: 2026-11-19
+Commit: pending
+Goal: User said to remove the launcher core and that the update card stayed on 'checking'.
+Evidence: manifest is reachable (HTTP 200) and the engine payload is 129811904 bytes, so the card was most likely downloading without progress.
+Change: D-017 (no upstream launcher core); PayloadUpdater reports progress and the card shows it. No code used the launcher core yet.
+Verification: none yet; APK build pending.

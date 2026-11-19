@@ -358,3 +358,9 @@
 - Status: IMPLEMENTED (not VERIFIED)
 - Files: android/loader/*, .github/workflows/android-apk.yml, DECISIONS.md (D-016)
 - Risk: a bundled engine rebuilt later than the downloaded payload is not preferred automatically; the downloaded one wins whenever present.
+
+## 2026-11-19 — Drop launcher core, update progress
+- Change ID: C-2026-11-19-17
+- Commit: pending
+- Status: IMPLEMENTED (not VERIFIED)
+- Files: DECISIONS.md (D-017), PayloadUpdater.kt, MainActivity.kt, ISSUES.md

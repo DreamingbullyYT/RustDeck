@@ -46,3 +46,6 @@ Repository HEAD: resolve dynamically from current main
 
 ## Update 2026-11-19 (S-2026-11-19-23)
 - Loader stub written (D-016); APK build pending. Downloaded engine would be loaded first, bundled engine is the fallback.
+
+## Update 2026-11-19 (S-2026-11-19-24)
+- D-017: no upstream launcher core, engine only. Update card shows download progress (unbuilt).

@@ -37,7 +37,7 @@ object PayloadUpdater {
             setRequestProperty("User-Agent", "RustDeck")
         }
 
-    fun check(ctx: Context): UpdateResult = try {
+    fun check(ctx: Context, onProgress: (String) -> Unit = {}): UpdateResult = try {
         val m = open(BASE + "manifest.json").run {
             check(responseCode == 200) { "manifest: HTTP $responseCode" }
             try { JSONObject(inputStream.bufferedReader().readText()) } finally { disconnect() }
@@ -56,7 +56,14 @@ object PayloadUpdater {
                 try {
                     inputStream.use { i -> tmp.outputStream().use { o ->
                         val buf = ByteArray(64 * 1024)
-                        while (true) { val n = i.read(buf); if (n < 0) break; digest.update(buf, 0, n); o.write(buf, 0, n) }
+                        var done = 0L
+                        var shown = -1L
+                        while (true) {
+                            val n = i.read(buf); if (n < 0) break
+                            digest.update(buf, 0, n); o.write(buf, 0, n)
+                            done += n
+                            if (done / 1_000_000 != shown) { shown = done / 1_000_000; onProgress("Downloading engine… ${shown} / ${remote.size / 1_000_000} MB") }
+                        }
                     } }
                 } finally { disconnect() }
             }

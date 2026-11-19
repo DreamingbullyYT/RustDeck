@@ -72,3 +72,9 @@ First run failed on a shell bug (fixed); no manifest published yet.
 ## I-017 — Downloaded engine can be older than the bundled one
 Status: OPEN
 The loader prefers the downloaded engine whenever it exists, even if a newer APK bundles a newer engine. The updater should remove stale payloads when the APK's own engine is newer (needs the bundled engine's upstream date embedded in the APK).
+
+## I-018 — Update card looked stuck during the 130 MB download
+Status: IMPLEMENTED (not VERIFIED)
+The engine payload is about 130 MB and the card showed no progress. The card now shows downloaded megabytes. Consider a release-profile or smaller engine later.
+
+Note (D-017): I-011 is closed as not needed; I-004 (LGPL) no longer applies while no launcher code is copied.
