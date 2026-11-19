@@ -23,7 +23,7 @@ Repository HEAD: resolve dynamically from current main
 - Update-without-APK on Android is not proven (see I-003).
 
 ## Next actions
-0. Install RustDeck-nightly.apk on the phone, start it, and read Android/data/com.rustdeck.app/files/rustdeck.log (or logcat tag RustDeck); record what happens.
+0. First start (2026-11-19, user): installs and opens, shows a blank dark screen (S-2026-11-19-08). Still needed: rustdeck.log or logcat to see what the engine did. Original step: install RustDeck-nightly.apk on the phone, start it, and read Android/data/com.rustdeck.app/files/rustdeck.log (or logcat tag RustDeck); record what happens.
 1. Confirm PMCS CI is green on main.
 1a. DONE: Android `cargo check` of horizon-client passes with patches 0001-0003 (run 44464658215). Next: a desktop `cargo check` with the patches to prove desktop is unchanged, then a real Android build (link to a shared library, find the Android entry point) and a test on the phone; decide which fixes go upstream as PRs. Then test on the phone (I-004) and try bundled Java (D-011, I-006).
 1b. Resolve I-004 (Horizon client on Android, LGPL) and I-006 (game preparation without Java).

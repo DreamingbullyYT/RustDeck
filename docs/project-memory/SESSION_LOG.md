@@ -246,3 +246,14 @@ Verification:
 - Earlier runs with the wrong import in patch 0004 failed (desktop 44466410937, APK 44466413729).
 Limitations:
 - The APK has not been installed or started: whether it runs is unknown. Expected problems: I-009 (several event loops), game files/Java (I-006), graphics, mod host. A small unused-import warning remains in patch 0004.
+
+## S-2026-11-19-08 — First start on the phone (user report)
+Date: 2026-11-19
+Commit: pending
+Goal: Record what the user saw when starting RustDeck-nightly.apk (OnePlus 11, landscape).
+Changes:
+- None to code.
+Verification:
+- User screenshot at 09:20: a blank dark gray screen under the system status bar, nothing drawn. The app installed and opened a window; it did not close at that moment. Whether the engine is running or stuck is unknown. rustdeck.log not read yet.
+Limitations:
+- One screenshot only; no log, no logcat.
