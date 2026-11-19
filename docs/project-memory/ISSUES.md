@@ -37,3 +37,8 @@ android/debug.keystore is in the repository and its password is public. Anyone c
 ## I-009 — Upstream opens several event loops one after another
 Status: OPEN (the APK builds; the first phone test will show it)
 Upstream creates a new winit event loop for the resource screen, the loading screen and the game (crates/horizon-client/src/game/runtime/no_resources.rs, resource_loader.rs, loading_screen.rs). On Android winit may allow only one event loop per process, and a NativeActivity cannot restart its loop. Not verified; if confirmed, the game needs a single-loop path on Android (an engine change, to be offered upstream).
+
+
+## I-010 — Android guest-stack startup check exits before game initialization
+Status: INVESTIGATING
+The first device log ends immediately after shell startup with `GuestStackUnavailable: stack inspection is unsupported on this platform`. Upstream `horizon_guest_stack::prepare_main()` calls `prepare()` and exits process code 1 on this error. Android is excluded from the Linux/macOS/Windows stack-inspection cfgs. Patch 0005 experimentally skips this fatal main-thread check on Android; it is not yet built or device-verified. Guest stack guarantees and `check_current()` behavior remain unresolved; test whether startup progresses and whether guest execution needs a proper Android stack strategy.
