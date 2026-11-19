@@ -3,8 +3,8 @@
 ## Tracked upstream
 - Policy (D-005): follow upstream `main`; no version pinning.
 - Upstream repo: https://github.com/horizon-rust/horizon
-- Last observed Horizon `main` revision: e3d4dc50dd14eea839eba72cdacd3426976e5fd3 (2026-11-18, inspected only; no build used it)
-- Last checked: 2026-11-18
+- Last observed Horizon `main` revision: 2d02b5e1a04c0e2ed224d4f218dc57d64b838aac (2026-11-19; branch head observed, not built)
+- Last checked: 2026-11-19
 
 ## Divergence from upstream
 See the patches table below (D-012). Every intentional divergence must reference a decision in DECISIONS.md.
@@ -42,3 +42,4 @@ Patches 0001-0003 are `cfg`-gated to Android; 0004 changes the call site for all
 Removed patches: the earlier winit-activity patch and the arboard/clipboard patch became unnecessary on 2026-11-19, when upstream commit 5cfd9f1 (#18358, "Unblock Android checks for the dedicated engine") added the same fixes (winit `android-native-activity` in crates/horizon-client/Cargo.toml, arboard off Android, `learn_layout` on Android).
 
 | patches/upstream/0004-android-event-loop.patch | new file crates/horizon-client/src/android_app.rs (`event_loop()`: on Android builds the winit loop with the stored AndroidApp, elsewhere `EventLoop::new()`); `pub mod android_app;` in lib.rs; the three `EventLoop::new()` calls in game/runtime/{no_resources,resource_loader,loading_screen}.rs now call it. Desktop behavior is the same call | applies to b45d73d; compiles on Android (APK build run 44468371147) and on Linux (desktop check run 44468287424) |
+| patches/upstream/0005-android-guest-stack-startup.patch | Android-only `prepare()` returns `Ok(())` instead of calling unsupported stack inspection and aborting `horizon_game::main()`. Worker stack sizing still uses `builder()`; this is a diagnostic unblock, not proof guest stack safety. | added 2026-11-19; not yet apply/build/device tested |
