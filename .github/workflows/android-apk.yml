@@ -10,6 +10,8 @@ on:
     paths:
       - 'patches/upstream/**'
       - 'android/**'
+      - '*.gradle.kts'
+      - 'gradle.properties'
       - '.github/workflows/android-apk.yml'
 
 permissions:
@@ -90,14 +92,35 @@ jobs:
           cargo build --profile fast --target aarch64-linux-android -p rustdeck-android 2>&1 | tee build.log
           exit "${PIPESTATUS[0]}"
 
-      - name: Package the APK
+      - name: Set up Java and Android SDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android platform
+        run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+
+      - name: Package Compose launcher and Horizon native engine
         run: |
           set -euo pipefail
           SO=horizon/target/aarch64-linux-android/fast/librustdeck_android.so
           ls -l "$SO"
           "$ANDROID_NDK_BIN/llvm-strip" --strip-unneeded "$SO"
-          ls -l "$SO"
-          rustdeck/android/build_apk.sh "$SO" RustDeck-nightly.apk "${{ github.run_number }}" "0.0.${{ github.run_number }}-nightly+${{ steps.up.outputs.sha }}"
+          mkdir -p rustdeck/app/src/main/jniLibs/arm64-v8a
+          cp "$SO" rustdeck/app/src/main/jniLibs/arm64-v8a/librustdeck_android.so
+          cd rustdeck
+          gradle --no-daemon assembleDebug
+          cp app/build/outputs/apk/debug/app-debug.apk ../RustDeck-nightly.apk
+          ls -lh ../RustDeck-nightly.apk
 
       - name: Upload APK as workflow artifact
         uses: actions/upload-artifact@v4
@@ -113,9 +136,9 @@ jobs:
           cd rustdeck
           gh release view nightly >/dev/null 2>&1 || gh release create nightly --prerelease \
             --title "RustDeck nightly (test build)" \
-            --notes "Test builds of the RustDeck Android shell around upstream Horizon main. Not a playable game yet."
+            --notes "RustDeck Android Compose launcher with the Horizon native engine payload. Early development; game preparation and gameplay are not yet implemented."
           gh release upload nightly ../RustDeck-nightly.apk --clobber
-          gh release edit nightly --notes "Latest: run ${{ github.run_number }}, upstream horizon-rust/horizon @ ${{ steps.up.outputs.sha }}. Test build of the RustDeck Android shell; not a playable game yet."
+          gh release edit nightly --notes "Latest: run ${{ github.run_number }}, upstream horizon-rust/horizon @ ${{ steps.up.outputs.sha }}. RustDeck Android Compose launcher + Horizon native engine payload. Early development; game preparation and gameplay are not yet implemented."
 
       - name: Upload build log
         if: always()
