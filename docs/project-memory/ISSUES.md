@@ -6,9 +6,9 @@ Status vocabulary: OPEN, INVESTIGATING, IMPLEMENTED, VERIFIED, BLOCKED.
 Status: VERIFIED (5 consecutive successful runs on main, 2026-11-18)
 The workflow and validator were copied and adapted from Rusty-survival-. The first GitHub Actions run on this repository has not been checked.
 
-## I-002 — Scope and stack undecided
+## I-002 — Remaining scope and packaging decisions
 Status: OPEN
-UI stack, platforms beyond mobile and packaging are UNDECIDED.
+The mobile UI stack is now decided as Kotlin + Jetpack Compose (D-010), and the first app/engine Activity split is recorded in D-014. Platforms beyond Android/mobile, final packaging, the Kotlin-to-Rust bridge and the D-007 independently updateable payload design remain undecided.
 
 ## I-003 — Updating engine, launcher core and UI without a new APK is unproven
 Status: OPEN
