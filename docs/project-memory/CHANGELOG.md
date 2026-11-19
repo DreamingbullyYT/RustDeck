@@ -297,3 +297,14 @@
 - Implementation: Added Compose Home/Installations/Settings UI; split the launcher Activity from Horizon's NativeActivity; migrated APK assembly to Gradle and included the native library as jniLibs. Added D-014.
 - Tests/commands: Workflow run 44501297217 was cancelled during native cargo compilation; no Gradle/Kotlin result. No device test.
 - Risks/follow-up: UI is presentation-only; Rust core bridge, version/install/auth/signature/prepare and Play flow remain unimplemented. D-007 update-without-APK remains unproven.
+
+
+## 2026-11-19 — Android holder cfg compile fix
+- Change ID: C-2026-11-19-10
+- Commit: 16d6f4f7ec30a89b2873e3b0e9061db97867a414
+- Status: IMPLEMENTED (build verification pending)
+- Motivation: Android compile failed because runtime lease helper referenced desktop-only holder.
+- Files/modules affected: `patches/upstream/0006-android-gate-holder-dependent-lease-units.patch`, PMCS.
+- Implementation: cfg-gate holder-dependent `lease_units()` to supported desktop OSes.
+- Tests/commands: Run 44513128759 failed at Rust compilation; patch 0006 is pending validation.
+- Risks/follow-up: ensure patch applies to current upstream main and compile succeeds on Android; continue build.
