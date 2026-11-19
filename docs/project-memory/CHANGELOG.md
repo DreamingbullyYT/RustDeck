@@ -181,3 +181,16 @@
 - Exact results: see SESSION_LOG S-2026-11-18-14
 - Not tested: past the first failing crates; any device
 - Risks / follow-up: Patches 0003 and 0004 touch upstream engine code; keep them minimal (D-012).
+
+## 2026-11-19 — Patches 0003 and 0004
+- Change ID: C-2026-11-19-01
+- Commit: pending (replace with resulting commit SHA)
+- Status: IMPLEMENTED
+- Motivation / observed problem: Probe run 3 failed on winit desktop-only key APIs and on hidapi (S-2026-11-18-14).
+- Root cause: Upstream code assumes desktop winit and a hidapi backend.
+- Files/modules affected: patches/upstream/0003-*.patch, 0004-*.patch, docs/project-memory/UPSTREAM_SYNC.md, CURRENT_STATE.md
+- Implementation: 0003 adds android_keys.rs and Android-only `use` lines; 0004 extends upstream's iOS gating of horizon-dualsense to Android. All Android-gated.
+- Tests/commands: git apply --check of all four patches against upstream 8989a51 (and applied together); python scripts/validate_project_memory.py
+- Exact results: all four apply cleanly, together and one by one (local); validator result in SESSION_LOG
+- Not tested: compiling the patched code; desktop build with the patches
+- Risks / follow-up: 0004 touches many lines (mechanical); more errors likely behind these.

@@ -164,3 +164,14 @@ Verification:
 - Errors in code after these are not known (cargo stops at the first failing crate).
 Limitations:
 - Compile check only; nothing run on a device.
+
+## S-2026-11-19-01 — Patches 0003 and 0004
+Date: 2026-11-19
+Commit: pending
+Goal: Fix the next Android compile blockers with minimal, Android-gated patches.
+Changes:
+- Added patches/upstream/0003 (android_keys.rs stand-ins) and 0004 (dualsense gated off on Android like iOS).
+Verification:
+- All four patches pass `git apply --check` against 8989a51 and apply together. Diffs read: every change is under an Android cfg or in a file that is compiled only on Android. CI result: pending.
+Limitations:
+- Patched code not compiled yet; desktop build with patches not run.

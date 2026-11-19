@@ -35,3 +35,7 @@ See the patches table below (D-012). Every intentional divergence must reference
 |---|---|---|
 | patches/upstream/0001-android-winit-activity.patch | enables winit's `android-native-activity` for Android in crates/horizon-client-render/Cargo.toml (3 lines) | applies and works in CI (run 44377119048): android-activity now compiles |
 | patches/upstream/0002-android-clipboard-fallback.patch | arboard only on non-Android; new file android_clipboard.rs stand-in so the in-game clipboard fallback is used on Android (crates/horizon-client-input) | applies and works in CI (run 44377119048): arboard no longer fails |
+| patches/upstream/0003-android-key-extensions.patch | Android stand-ins (new file crates/horizon-client-input/src/android_keys.rs) for winit's desktop-only `modifier_supplement` and `scancode`; `use` lines in keybinds.rs and window_handler.rs pick them on Android only | applies to 8989a51 (git apply --check, local); not compiled yet |
+| patches/upstream/0004-android-dualsense-off.patch | gates crates/horizon-dualsense off on Android exactly as upstream already does for iOS (`target_os = "ios"` becomes `any(ios, android)`; 46+ cfg lines, mechanical) so hidapi is not built | applies to 8989a51 (git apply --check, local); not compiled yet |
+
+All four patches are `cfg`-gated to Android; desktop code paths are unchanged (checked by reading the diffs; a desktop build with the patches has not been run yet).

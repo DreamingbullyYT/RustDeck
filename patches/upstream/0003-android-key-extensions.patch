@@ -1,0 +1,88 @@
+diff --git a/crates/horizon-client-input/src/android_keys.rs b/crates/horizon-client-input/src/android_keys.rs
+new file mode 100644
+index 0000000..d901089
+--- /dev/null
++++ b/crates/horizon-client-input/src/android_keys.rs
+@@ -0,0 +1,30 @@
++//! Android stand-ins for winit's desktop-only key extensions (RustDeck patch 0003).
++//!
++//! winit builds `platform::modifier_supplement` and `platform::scancode` only for Windows, macOS, X11
++//! and Wayland. Same method names, so the callers only change which `use` they take on Android:
++//! the key without modifiers is the logical key, and there is no platform scan code.
++
++use winit::event::KeyEvent;
++use winit::keyboard::{Key, PhysicalKey};
++
++/// `winit::platform::modifier_supplement::KeyEventExtModifierSupplement`.
++pub trait KeyEventExtModifierSupplement {
++    fn key_without_modifiers(&self) -> Key;
++}
++
++impl KeyEventExtModifierSupplement for KeyEvent {
++    fn key_without_modifiers(&self) -> Key {
++        self.logical_key.clone()
++    }
++}
++
++/// `winit::platform::scancode::PhysicalKeyExtScancode`.
++pub trait PhysicalKeyExtScancode {
++    fn to_scancode(self) -> Option<u32>;
++}
++
++impl PhysicalKeyExtScancode for PhysicalKey {
++    fn to_scancode(self) -> Option<u32> {
++        None
++    }
++}
+diff --git a/crates/horizon-client-input/src/keybinds.rs b/crates/horizon-client-input/src/keybinds.rs
+index b08731f..e304a24 100644
+--- a/crates/horizon-client-input/src/keybinds.rs
++++ b/crates/horizon-client-input/src/keybinds.rs
+@@ -303,6 +303,9 @@ pub use horizon_client_core::key_display::{
+ /// Q key shows A.
+ pub fn learn_layout(event: &winit::event::KeyEvent) {
+     use winit::keyboard::{Key, PhysicalKey};
++    #[cfg(target_os = "android")]
++    use crate::android_keys::KeyEventExtModifierSupplement;
++    #[cfg(not(target_os = "android"))]
+     use winit::platform::modifier_supplement::KeyEventExtModifierSupplement;
+     let PhysicalKey::Code(code) = event.physical_key else {
+         return;
+@@ -356,6 +359,9 @@ pub fn layout_key_name(
+ /// doesn't identify; 0 when there is neither. Stable within a platform only.
+ pub fn raw_key_code(physical: winit::keyboard::PhysicalKey) -> u32 {
+     use winit::keyboard::{NativeKeyCode, PhysicalKey};
++    #[cfg(target_os = "android")]
++    use crate::android_keys::PhysicalKeyExtScancode;
++    #[cfg(not(target_os = "android"))]
+     use winit::platform::scancode::PhysicalKeyExtScancode;
+     match physical {
+         PhysicalKey::Unidentified(native) => match native {
+diff --git a/crates/horizon-client-input/src/lib.rs b/crates/horizon-client-input/src/lib.rs
+index ff26ae1..bbae130 100644
+--- a/crates/horizon-client-input/src/lib.rs
++++ b/crates/horizon-client-input/src/lib.rs
+@@ -3,6 +3,9 @@
+ //! options. horizon-client re-exports each module under its old path
+ //! (`horizon_client::keybinds`, ...).
+ #![forbid(unsafe_code)]
++// Android stand-ins for winit's desktop-only key extensions (RustDeck patch 0003).
++#[cfg(target_os = "android")]
++pub mod android_keys;
+ pub mod actions;
+ pub mod clipboard;
+ pub mod gamepad;
+diff --git a/crates/horizon-client/src/game/runtime/window_handler.rs b/crates/horizon-client/src/game/runtime/window_handler.rs
+index 6a86a75..7b560d0 100644
+--- a/crates/horizon-client/src/game/runtime/window_handler.rs
++++ b/crates/horizon-client/src/game/runtime/window_handler.rs
+@@ -437,6 +437,9 @@ impl ApplicationHandler for Game<'_> {
+         };
+         self.handle_window_event(event_loop, id, event, input_trace::InputOrigin::User);
+         if let Some((event, modifiers)) = key {
++            #[cfg(target_os = "android")]
++            use horizon_client_input::android_keys::KeyEventExtModifierSupplement;
++            #[cfg(not(target_os = "android"))]
+             use winit::platform::modifier_supplement::KeyEventExtModifierSupplement;
+             let name = match event.physical_key {
+                 PhysicalKey::Code(code) => horizon_client::keybinds::key_name(code),
