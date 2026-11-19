@@ -11,8 +11,16 @@ Status: PARTIALLY DECIDED. Product/UI direction and UI technology are accepted i
 - Updates are automatic from this repo; the APK changes only for new permissions; engine, launcher core and UI are updatable without a new APK (D-007).
 - Divergence from upstream is minimal and recorded in DECISIONS.md.
 
-## Implied structure (not yet designed)
-- A thin APK shell (permissions, bootstrap, updater) plus updatable payloads: engine, launcher core and UI.
+## Android app structure (first implementation)
+- `app/` is the Kotlin/Jetpack Compose launcher Activity and owns the visible RustDeck UI.
+- The Horizon engine remains a separate `android.app.NativeActivity`, with its native Rust library packaged under `app/src/main/jniLibs/arm64-v8a/`.
+- The Compose Activity is the APK entry point. The engine Activity is not exposed as the launcher entry point and must only be started after RustDeck has prepared valid game resources (D-014).
+- The current Compose screens are a UI foundation only: Home, Installations and Settings; they do not yet invoke the Rust launcher core.
+
+## Still to design / implement
+- Kotlin-to-Rust launcher-core bridge (JNI, CLI process or other).
+- How Rust core is exposed as an Android library without copying or forking upstream logic unnecessarily.
+- Thin bootstrap/updater and independently updateable engine, launcher-core and UI payloads (D-007; I-003 remains unproven).
 
 ## CI
 - CI builds APK, libraries and other outputs automatically only when upstream has a new release or nightly; no new upstream build means no build (D-008). Not implemented.
