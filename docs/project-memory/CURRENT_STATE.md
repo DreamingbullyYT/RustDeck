@@ -23,7 +23,7 @@ Repository HEAD: resolve dynamically from current main
 - Update-without-APK on Android is not proven (see I-003).
 
 ## Next actions
-0. First start diagnostic (2026-11-19): log received. `horizon_game::main()` exits in `horizon_guest_stack::prepare_main()` because Android is excluded from stack inspection; it prints `GuestStackUnavailable: stack inspection is unsupported on this platform` then `process::exit(1)`. Root cause is confirmed. Patch 0005 added to bypass this fatal check on Android only; not yet built/tested. Next: build and test patch 0005; then inspect next startup blocker.
+0. First start diagnostic (2026-11-19): log received. `horizon_game::main()` exits in `horizon_guest_stack::prepare_main()` because Android is excluded from stack inspection; it prints `GuestStackUnavailable: stack inspection is unsupported on this platform` then `process::exit(1)`. Root cause is confirmed. Patch 0005 added to bypass this fatal check on Android only. First CI attempt failed due malformed hunk counts; corrected in commit 2c07940 and rerun pending. Next: verify patch applies/builds, then inspect next startup blocker.
 1. Confirm PMCS CI is green on main.
 1a. DONE: Android `cargo check` of horizon-client passes with patches 0001-0003 (run 44464658215). Next: a desktop `cargo check` with the patches to prove desktop is unchanged, then a real Android build (link to a shared library, find the Android entry point) and a test on the phone; decide which fixes go upstream as PRs. Then test on the phone (I-004) and try bundled Java (D-011, I-006).
 1b. Resolve I-004 (Horizon client on Android, LGPL) and I-006 (game preparation without Java).
