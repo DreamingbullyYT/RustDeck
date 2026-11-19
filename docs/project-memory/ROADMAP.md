@@ -25,3 +25,5 @@
 - Later phases get their own exit criteria when they are planned.
 
 - 2026-11-19: Compose APK build is past patch application and the Rust build; Gradle Java target fixed, next run pending.
+
+- 2026-11-19: Compose APK built by CI (run 44520511269); install and portrait/landscape check pending.

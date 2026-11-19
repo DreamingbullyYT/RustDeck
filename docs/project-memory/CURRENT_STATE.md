@@ -31,3 +31,6 @@ Repository HEAD: resolve dynamically from current main
 2. Look at upstream Horizon `main` and record the observed revision in UPSTREAM_SYNC.md.
 3. Decide the Kotlin-to-Rust bridge and first milestone and record them in DECISIONS.md.
 4. Prove on a real device that engine/launcher/UI payloads can be updated without a new APK (I-003).
+
+## Update 2026-11-19 (S-2026-11-19-19)
+- Android APK run 44520511269 succeeded with the Compose app and the engine library; the APK is in the nightly prerelease. Device install not yet tested.

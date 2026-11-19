@@ -433,3 +433,11 @@ Verification:
 - Cause read from the job log. The fix is not yet verified: the next APK run must pass `:app:compileDebugKotlin`.
 Next:
 - Read the next run; address the next real error, if any. Not VERIFIED until an APK is produced and installed.
+
+## S-2026-11-19-19 — Compose APK build succeeded
+Date: 2026-11-19
+Commit: 8845edf
+Goal: Confirm the Java 17 fix.
+Evidence: Android APK run 44520511269 completed with success; the nightly prerelease holds RustDeck-nightly.apk (about 67.6 MB). Issue ID of the patch-hunk lesson renamed I-010 to I-013 (duplicate ID).
+Verification: APK produced by CI; not yet installed on a device, so not VERIFIED.
+Next: user installs the nightly APK; check the Compose UI renders.

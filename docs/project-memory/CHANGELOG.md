@@ -321,3 +321,11 @@
 - Exact results: pending the next run
 - Not tested: everything after :app:compileDebugKotlin
 - Risks / follow-up: more Gradle or Kotlin errors may follow.
+
+## 2026-11-19 — Compose APK built in CI
+- Change ID: C-2026-11-19-12
+- Commit: 8845edf
+- Status: IMPLEMENTED (CI build passed; not installed on a device)
+- Files: docs/project-memory/ISSUES.md (duplicate ID I-010 renamed I-013)
+- Exact results: run 44520511269 success; RustDeck-nightly.apk published.
+- Not tested: install and rendering on a phone.
