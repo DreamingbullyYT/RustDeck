@@ -1,13 +1,13 @@
 diff --git a/crates/horizon-client/src/android_app.rs b/crates/horizon-client/src/android_app.rs
 new file mode 100644
-index 00000000..44510cf1
+index 00000000..25428e75
 --- /dev/null
 +++ b/crates/horizon-client/src/android_app.rs
 @@ -0,0 +1,29 @@
 +//! The winit event loop. Android needs the `AndroidApp` that `android_main` receives for every
 +//! event loop it builds (RustDeck patch 0004); elsewhere this is `EventLoop::new()`.
 +
-+use winit::event_loop::{EventLoop, EventLoopError};
++use winit::{error::EventLoopError, event_loop::EventLoop};
 +
 +#[cfg(target_os = "android")]
 +static APP: std::sync::OnceLock<winit::platform::android::activity::AndroidApp> =

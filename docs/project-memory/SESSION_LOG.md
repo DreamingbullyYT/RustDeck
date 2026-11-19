@@ -221,3 +221,15 @@ Verification:
 - Patches 0001-0004 apply together on b45d73d (local). Workflow runs: pending.
 Limitations:
 - Nothing compiled for the shell yet; no device test.
+
+## S-2026-11-19-06 — Desktop check caught an error in patch 0004
+Date: 2026-11-19
+Commit: pending
+Goal: Read the first desktop check (run 44466410937, workflow at 4d2ae80).
+Changes:
+- Fixed patch 0004: `EventLoopError` is imported from `winit::error`, not `winit::event_loop` (private there).
+Verification:
+- Desktop `cargo check -p horizon-client` on Linux FAILED with E0603 (`EventLoopError` is private) in the new android_app.rs; this is the error of the patch, not of upstream. The Android APK build (run 44466413729) was compiling on the same wrong patch.
+- Patches 0001-0004 still apply together on b45d73d (local).
+Limitations:
+- Desktop result after the fix: pending.
