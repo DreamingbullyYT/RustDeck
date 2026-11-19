@@ -101,9 +101,11 @@ jobs:
 
       - name: Install Android platform
         run: |
-          set -euo pipefail
+          set -eu
           SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           test -x "$SDKMANAGER"
+          # sdkmanager closes stdin after accepting licenses; "yes" may exit with
+          # SIGPIPE/Broken pipe. Do not enable pipefail for this acceptance pipe.
           yes | "$SDKMANAGER" --licenses >/dev/null
           "$SDKMANAGER" "platforms;android-36" "build-tools;36.0.0"
 
