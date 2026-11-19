@@ -287,3 +287,16 @@ Verification:
 - Corrected patch is committed; awaiting a fresh patch-apply/build run.
 Limitations:
 - No successful patch application, compilation or device test yet.
+
+
+## S-2026-11-19-11 — Corrected patch applies on current upstream; APK build underway
+Date: 2026-11-19
+Commit: 2c07940 (tested in workflow run 44496466298)
+Goal: Confirm patch 0005 is syntactically valid and applies to latest Horizon main.
+Changes:
+- None after the hunk-count correction; observed workflow run 5.
+Verification:
+- Android workflow step “Apply RustDeck patches and add the Android shell” succeeded with all patches 0001-0005 against current upstream main (observed upstream 2d02b5e1).
+- Android cargo build is still running; APK packaging/device testing not yet complete.
+Limitations:
+- Successful patch application is not a compilation or runtime result.
