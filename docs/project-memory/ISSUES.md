@@ -40,8 +40,8 @@ Upstream creates a new winit event loop for the resource screen, the loading scr
 
 
 ## I-010 — Android guest-stack startup check exits before game initialization
-Status: INVESTIGATING
-The first device log ends immediately after shell startup with `GuestStackUnavailable: stack inspection is unsupported on this platform`. Upstream `horizon_guest_stack::prepare_main()` calls `prepare()` and exits process code 1 on this error. Android is excluded from the Linux/macOS/Windows stack-inspection cfgs. Patch 0005 experimentally skips this fatal main-thread check on Android; it is not yet built or device-verified. Guest stack guarantees and `check_current()` behavior remain unresolved; test whether startup progresses and whether guest execution needs a proper Android stack strategy.
+Status: PARTIALLY VERIFIED — workaround reaches Horizon UI
+The first device log showed `GuestStackUnavailable: stack inspection is unsupported on this platform`. Patch 0005 skips the fatal guest-stack check on Android. The user then reached Horizon's `No prepared game files` UI, verifying startup progresses past this check. This does not prove guest stack guarantees or `check_current()` behavior are safe for guest execution; those remain unresolved and require a real game launch test.
 
 
 ## I-011 — Reuse of Horizon launcher core on Android and Android engine artifacts
