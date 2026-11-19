@@ -415,3 +415,7 @@ Next:
 
 ### Follow-up — patch 0006 hunk syntax correction (2026-11-19)
 The first retry run 44514421085 failed before compilation: `git apply` reported patch 0006 was corrupt at line 12. The hunk header declared 9 added lines but the hunk contained only 7. Corrected the header from `@@ -394,6 +394,9 @@` to `@@ -394,6 +394,7 @@` in commit 6497387fcc17315818ee7fb244e0320f9ba9afeb. The next run must verify both patch application and the original Rust compile fix; no compile result is claimed yet.
+
+
+### Follow-up 2 — narrow patch 0006 context to upstream function line (2026-11-19)
+Run 44514542263 failed during patch application: `git apply` could not match the overly broad comment hunk in upstream revision `908e3429b8c8487272a9bb3f3b18666c4262c6df`. Replaced the hunk with a minimal one-line context at the exact `pub fn lease_units(` line (425), commit `c604c11e27d00b3d0480e9176714889ff9fe09c8`. New Android run 44514679341 is in progress; patch application and compilation remain unverified.
