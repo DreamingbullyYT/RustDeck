@@ -194,3 +194,16 @@
 - Exact results: all four apply cleanly, together and one by one (local); validator result in SESSION_LOG
 - Not tested: compiling the patched code; desktop build with the patches
 - Risks / follow-up: 0004 touches many lines (mechanical); more errors likely behind these.
+
+## 2026-11-19 — Patches refreshed to upstream b45d73d
+- Change ID: C-2026-11-19-02
+- Commit: pending (replace with resulting commit SHA)
+- Status: IMPLEMENTED
+- Motivation / observed problem: Run 4 of the probe (44463236029) applied only some patches because upstream moved; the workflow ignored the failures.
+- Root cause: Upstream commit 5cfd9f1 (#18358) fixed winit-activity, arboard and learn_layout for Android itself; the loop in the workflow did not stop on a failed patch.
+- Files/modules affected: patches/upstream/* (now 0001 keys, 0002 dualsense), .github/workflows/android-client-probe.yml, docs/project-memory/*
+- Implementation: Dropped the obsolete patches, rewrote the key patch without a new file, kept the dualsense patch, made the workflow stop on a patch failure and check only horizon-client.
+- Tests/commands: git apply --check and applying both patches together on b45d73d; python scripts/validate_project_memory.py
+- Exact results: both patches apply (local); CI result in SESSION_LOG
+- Not tested: compile; desktop build; any device
+- Risks / follow-up: I-007.

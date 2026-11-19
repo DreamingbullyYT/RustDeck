@@ -175,3 +175,15 @@ Verification:
 - All four patches pass `git apply --check` against 8989a51 and apply together. Diffs read: every change is under an Android cfg or in a file that is compiled only on Android. CI result: pending.
 Limitations:
 - Patched code not compiled yet; desktop build with patches not run.
+
+## S-2026-11-19-02 — Probe run 4 and refreshed patches
+Date: 2026-11-19
+Commit: pending
+Goal: Read run 44463236029 (workflow at b70c200) and keep going.
+Changes:
+- Run 4 result: patches 0002 and 0003 did not apply (upstream had moved from 8989a51 to b45d73d) but the job went on; its compile errors (only `winit::platform::scancode` in horizon-client-input, for both checks) therefore do not describe the patched tree. 0001 and 0004 did apply.
+- Upstream commit 5cfd9f1 already contains the winit-activity, arboard and learn_layout fixes. Dropped those patches, rewrote the key patch (scancode, key_without_modifiers) and kept the dualsense one. Workflow now stops on a patch failure.
+Verification:
+- Both new patches pass `git apply --check` and apply together on b45d73d. CI: pending.
+Limitations:
+- Not compiled; desktop build with patches not run; no device test.

@@ -1,12 +1,12 @@
 diff --git a/crates/horizon-dualsense/Cargo.toml b/crates/horizon-dualsense/Cargo.toml
-index 6406437..e3a8f2c 100644
+index 64064370..0009a579 100644
 --- a/crates/horizon-dualsense/Cargo.toml
 +++ b/crates/horizon-dualsense/Cargo.toml
 @@ -9,10 +9,11 @@ description = "The DualSense's and Xbox One's output over HID: rumble, adaptive
  [dependencies]
  log = "0.4"
  
-+# RustDeck patch 0004: Android is gated off like iOS.
++# RustDeck patch 0002: Android is gated off like iOS.
  # hidapi has no iOS backend and its build script stops there, so the output's two
  # dependencies go only to the targets that have one. On iOS the crate builds without
  # output: the Link never opens.
@@ -16,7 +16,7 @@ index 6406437..e3a8f2c 100644
  # IOKit on macOS (opened shared, so gilrs keeps reading the pad), the HID API on Windows.
  hidapi = { version = "2.6.7", default-features = false, features = ["linux-static-hidraw", "macos-shared-device"] }
 diff --git a/crates/horizon-dualsense/src/device.rs b/crates/horizon-dualsense/src/device.rs
-index a59857f..4d88ca3 100644
+index a59857f6..4d88ca3c 100644
 --- a/crates/horizon-dualsense/src/device.rs
 +++ b/crates/horizon-dualsense/src/device.rs
 @@ -1,20 +1,20 @@
@@ -163,7 +163,7 @@ index a59857f..4d88ca3 100644
      use super::*;
      use std::sync::atomic::AtomicUsize;
 diff --git a/crates/horizon-dualsense/src/lib.rs b/crates/horizon-dualsense/src/lib.rs
-index a945fbc..faceb7d 100644
+index a945fbc0..faceb7d8 100644
 --- a/crates/horizon-dualsense/src/lib.rs
 +++ b/crates/horizon-dualsense/src/lib.rs
 @@ -10,9 +10,9 @@
@@ -179,7 +179,7 @@ index a945fbc..faceb7d 100644
  pub mod haptics;
  pub mod trigger;
 diff --git a/crates/horizon-dualsense/src/xbox.rs b/crates/horizon-dualsense/src/xbox.rs
-index 18c572e..d7a3046 100644
+index 18c572ec..d7a3046c 100644
 --- a/crates/horizon-dualsense/src/xbox.rs
 +++ b/crates/horizon-dualsense/src/xbox.rs
 @@ -12,7 +12,7 @@ pub mod device;
@@ -192,7 +192,7 @@ index 18c572e..d7a3046 100644
  pub use device::{Link, Transport};
  
 diff --git a/crates/horizon-dualsense/src/xbox/device.rs b/crates/horizon-dualsense/src/xbox/device.rs
-index 45843e2..9eec7ef 100644
+index 45843e27..9eec7eff 100644
 --- a/crates/horizon-dualsense/src/xbox/device.rs
 +++ b/crates/horizon-dualsense/src/xbox/device.rs
 @@ -4,26 +4,26 @@

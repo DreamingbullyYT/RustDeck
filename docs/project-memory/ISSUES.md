@@ -25,3 +25,7 @@ Upstream's game ships only Nightly; releases exist only for the launcher (`launc
 ## I-006 — Game preparation on Android needs Java or a replacement
 Status: INVESTIGATING (direction chosen in D-011; unproven)
 Upstream preparation needs JDK 25 and the player's own Minecraft files (or Mojang download for an owning account); Java-free preparation is upstream issue #1750. On Android this must be solved or the launcher cannot prepare the game.
+
+## I-007 — Patches break when upstream moves
+Status: INVESTIGATING
+Upstream `main` changes daily (D-005). On 2026-11-19 two patches stopped applying and the probe workflow did not fail on it, so its result was misleading; the workflow now fails on a patch that does not apply. Upstream also started Android work itself (5cfd9f1), which makes patches obsolete: re-check upstream before writing new ones.

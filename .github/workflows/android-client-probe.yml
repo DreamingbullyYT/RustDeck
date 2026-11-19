@@ -2,7 +2,7 @@ name: Android client probe
 # Experiment (docs/project-memory/CURRENT_STATE.md, I-004): does upstream Horizon's client compile for Android?
 # Checks out horizon-rust/horizon main (D-005: no pinning), applies RustDeck's small patches from
 # patches/upstream/ (kept as separate files so upstream stays untouched, D-002) and runs `cargo check`
-# for aarch64-linux-android. A passing check does not prove the client starts on a device. Manual only.
+# for aarch64-linux-android (horizon-client only: it pulls in the render crate). A patch that does not apply fails the run. A passing check does not prove the client starts on a device. Manual only.
 on:
   workflow_dispatch:
 
@@ -40,9 +40,11 @@ jobs:
       - name: Apply RustDeck patches to upstream
         working-directory: horizon
         run: |
+          set -euo pipefail
           for p in ../rustdeck/patches/upstream/*.patch; do
             echo "applying $p"
-            git apply --check "$p" && git apply "$p"
+            git apply --check "$p"
+            git apply "$p"
           done
           git status --short
 
@@ -62,20 +64,14 @@ jobs:
             echo "AR_aarch64_linux_android=$BIN/llvm-ar"
           } >> "$GITHUB_ENV"
 
-      - name: cargo check horizon-client-render (Android)
-        id: render
-        working-directory: horizon
-        continue-on-error: true
-        run: |
-          rustc --version
-          cargo check --target aarch64-linux-android -p horizon-client-render 2>&1 | tee render.log
-          exit "${PIPESTATUS[0]}"
-
       - name: cargo check horizon-client (Android)
         id: client
         working-directory: horizon
         continue-on-error: true
-        run: cargo check --target aarch64-linux-android -p horizon-client 2>&1 | tee client.log; exit "${PIPESTATUS[0]}"
+        run: |
+          rustc --version
+          cargo check --target aarch64-linux-android -p horizon-client 2>&1 | tee client.log
+          exit "${PIPESTATUS[0]}"
 
       - name: Summary
         if: always()
@@ -83,13 +79,8 @@ jobs:
         run: |
           {
             echo "## Result"
-            echo "- horizon-client-render: ${{ steps.render.outcome }}"
             echo "- horizon-client: ${{ steps.client.outcome }}"
             echo
-            echo "### First errors (render)"
-            echo '```'
-            grep -m 20 -E '^error' render.log || true
-            echo '```'
             echo "### First errors (client)"
             echo '```'
             grep -m 20 -E '^error' client.log || true
@@ -102,6 +93,5 @@ jobs:
         with:
           name: android-probe-logs
           path: |
-            horizon/render.log
             horizon/client.log
           if-no-files-found: ignore
