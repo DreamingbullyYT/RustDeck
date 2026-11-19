@@ -1,8 +1,8 @@
 name: Android APK
-# Builds RustDeck's Android shell around upstream Horizon main (D-005: no pinning) with the small
-# patches in patches/upstream/ (D-012), packages a signed debug APK and publishes it as the
-# `nightly` prerelease so it can be downloaded on the phone (D-008). It is a TEST build: it starts
-# upstream's game code; it is not known to run (I-004). Manual or Android-source change test.
+# Builds the Kotlin/Compose RustDeck launcher plus the upstream Horizon Android NativeActivity.
+# Horizon main is tracked without pinning (D-005); minimal compatibility patches are applied (D-012).
+# The engine Activity remains separate and must only be launched after game preparation. This early
+# build still has no launcher-core integration or playable game. Manual or Android-source change test.
 on:
   workflow_dispatch:
   push:
@@ -10,6 +10,7 @@ on:
     paths:
       - 'patches/upstream/**'
       - 'android/**'
+      - 'app/**'
       - '*.gradle.kts'
       - 'gradle.properties'
       - '.github/workflows/android-apk.yml'
