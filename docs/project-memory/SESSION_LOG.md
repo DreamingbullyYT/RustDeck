@@ -257,3 +257,19 @@ Verification:
 - User screenshot at 09:20: a blank dark gray screen under the system status bar, nothing drawn. The app installed and opened a window; it did not close at that moment. Whether the engine is running or stuck is unknown. rustdeck.log not read yet.
 Limitations:
 - One screenshot only; no log, no logcat.
+
+
+## S-2026-11-19-09 — First device log: root cause identified; Android stack bypass patch
+Date: 2026-11-19
+Commit: 33618a8 (patch file)
+Goal: Diagnose the blank screen from the actual phone log and remove the fatal unsupported-platform startup exit with a minimal Android-only experiment.
+Changes:
+- User supplied `rustdeck.log`: only shell startup followed by `GuestStackUnavailable: GuestStackUnavailable: stack inspection is unsupported on this platform`.
+- Inspected upstream `horizon-game::main()` and `horizon-guest-stack::prepare_main()`; `prepare_main()` calls `prepare()` and `process::exit(1)` on error. Android is excluded from the supported inspection cfgs, so startup exits before `entry::prepare()` or UI initialization.
+- Added `patches/upstream/0005-android-guest-stack-startup.patch`, which makes Android `prepare()` return `Ok(())` and leaves other platform behavior unchanged. This is an experiment; the actual guest-stack safety on Android is unresolved.
+- Observed upstream `main` at `2d02b5e1a04c0e2ed224d4f218dc57d64b838aac`.
+Verification:
+- Root cause confirmed by reading upstream source and matching it to the user's exact log.
+- Patch file committed to RustDeck (`33618a8`). No patch application, build, validator, or device test has run yet.
+Limitations:
+- The Android-only bypass may expose another startup blocker or stack-safety problem; `check_current()` remains unsupported on Android. Build and test before claiming fix.
