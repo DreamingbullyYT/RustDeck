@@ -2,7 +2,7 @@ name: Android APK
 # Builds the Kotlin/Compose RustDeck launcher plus the upstream Horizon Android NativeActivity.
 # Horizon main is tracked without pinning (D-005); minimal compatibility patches are applied (D-012).
 # The engine Activity remains separate and must only be launched after game preparation. This early
-# build still has no launcher-core integration or playable game. Manual or Android-source change test.
+# build still has no launcher-core integration or playable game. Manual or Android/Compose source change test.
 on:
   workflow_dispatch:
   push:
