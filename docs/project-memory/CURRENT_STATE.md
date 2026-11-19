@@ -1,7 +1,7 @@
 # Current State
 
 Last updated: 2026-11-19
-Status: COMPOSE_LAUNCHER_IMPLEMENTED; ANDROID_BUILD_RETRY_PENDING
+Status: COMPOSE_LAUNCHER_IMPLEMENTED; ANDROID_NATIVE_COMPILE_BLOCKED_BY_UPSTREAM_CFG; PATCHED_RETRY_PENDING
 Repository HEAD: resolve dynamically from current main
 
 ## Direction
@@ -19,13 +19,13 @@ Repository HEAD: resolve dynamically from current main
 - .github/workflows/desktop-check.yml: manual desktop `cargo check` with the patches (passed on 2026-11-19 after a fix to patch 0004: run 44468287424).
 - PMCS CI: the last 5 runs on main passed (checked 2026-11-18, Actions).
 - First Android runtime observation uses Horizon upstream revision `2d02b5e1a04c0e2ed224d4f218dc57d64b838aac` (observed for run 44496466298; see UPSTREAM_SYNC.md).
-- UI is Kotlin with Compose (D-010). The app now has a Gradle Android application module; Kotlin-to-Rust bridge and update mechanism/format remain UNDECIDED. APK workflow now packages Compose with Gradle; first attempt exposed an obsolete SDK setup action failure. The workflow now uses the runner's preinstalled sdkmanager directly; retry pending. Release and nightly channels; CI builds automatically only when upstream has a new release or nightly, and skips otherwise; the newest build is installed (D-008).
+- UI is Kotlin with Compose (D-010). The app now has a Gradle Android application module; Kotlin-to-Rust bridge and update mechanism/format remain UNDECIDED. APK workflow now packages Compose with Gradle; first attempt exposed an obsolete SDK setup action failure. The workflow now uses the runner's preinstalled sdkmanager directly; SDK failure was fixed, but run 44513128759 then failed Rust compilation in `horizon-mod-package::runtime_leases` because `lease_units()` referenced Android-excluded `holder`. Patch 0006 now cfg-gates this holder-dependent helper to supported desktop targets; retry pending. Release and nightly channels; CI builds automatically only when upstream has a new release or nightly, and skips otherwise; the newest build is installed (D-008).
 - Update-without-APK on Android is not proven (see I-003).
 
 ## Next actions
 0. DONE — Horizon NativeActivity reached its no-resources fallback UI on device after patch 0005. This proves the native shell can render, not game preparation. The next APK replaces the NativeActivity launcher entry with the Compose RustDeck Activity and keeps Horizon NativeActivity separate.
-0a. IMPLEMENTED — first Compose UI foundation (2026-11-19): Home, Installations and Settings; animated background; separate engine NativeActivity; Gradle Android project and updated APK workflow. Build/device verification pending. First attempt run 44501544949: Rust native library compiled successfully; failed in `android-actions/setup-android@v3` before Gradle, because its sdkmanager attempted to install obsolete package `tools` and exited 1. Workflow fix committed; retry pending.
-1. Confirm PMCS CI is green on main.
+0a. IMPLEMENTED — first Compose UI foundation (2026-11-19): Home, Installations and Settings; animated background; separate engine NativeActivity; Gradle Android project and updated APK workflow. Build/device verification pending. First attempt run 44501544949: Rust native library compiled successfully; failed in obsolete Android SDK setup. Second run 44506285451 failed at sdkmanager license `yes` pipe (Broken pipe); workflow fix. Third run 44513128759 then failed compiling `horizon-mod-package` with E0433 (`crate::holder` absent on Android) in `runtime_leases::lease_units`; patch 0006 gates the helper to desktop OSes. Retry pending.
+1. Confirm PMCS CI is green on main and patch 0006 applies/builds.
 1a. DONE: Android `cargo check` of horizon-client passes with patches 0001-0003 (run 44464658215); desktop `cargo check` passed with patches (run 44468287424); Android APK built and device-launched to Horizon's no-resources screen (run 44496466298 plus user screenshot).
 1b. Resolve I-004 (Horizon client on Android, LGPL) and I-006 (game preparation without Java).
 2. Look at upstream Horizon `main` and record the observed revision in UPSTREAM_SYNC.md.
