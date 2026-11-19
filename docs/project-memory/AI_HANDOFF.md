@@ -1,6 +1,6 @@
 # AI Handoff — Mandatory Entry Point
 
-Last updated: 2026-11-18
+Last updated: 2026-11-19
 Project: RustDeck
 Repository: DreamingbullyyT/RustDeck
 Product: launcher for Horizon (Minecraft Java rewritten in Rust)
@@ -29,6 +29,9 @@ Every substantial change records date, commit, files, motivation, implementation
 
 ## Status vocabulary
 OPEN, INVESTIGATING, IMPLEMENTED, VERIFIED, BLOCKED.
+
+## Current implementation note (2026-11-19)
+The first Compose Android app module now exists under `app/`; it is the launcher entry point. Horizon's native engine remains a separate `NativeActivity`, not the launcher UI. The Compose APK build workflow is being migrated to Gradle. Home/Installations/Settings are presentation-only; do not claim the launcher core, installation, game preparation or Play works until implemented and tested. See D-014 and latest SESSION_LOG entry.
 
 ## Handoff rule
 At the end of a work session, update CURRENT_STATE.md, ISSUES.md, ROADMAP.md, CHANGELOG.md and this handoff when relevant. Append a dated SESSION_LOG.md entry with exact work and verification. State clearly what was and was not tested.
